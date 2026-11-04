@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Піратський морський бій</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@600;700;800&family=Rubik:wght@700;800;900&display=swap">
+<style>
+/* Layout: a sunny mobile-game look. Bright photo backdrop with drifting clouds; a chunky wooden game board with turquoise water tiles and gold-coin coordinates in the centre; bubbly white cards for the fleet and the side panels. */
+:root{
+  --sky:#bdeeff;
+  --sea:#19aee0;
+  --sea-dk:#0a78a8;
+  --sea-lt:#7ee6f7;
+  --sand:#fff1cc;
+  --sand-dk:#f4c869;
+  --sun:#ffc93c;
+  --sun-dk:#d99400;
+  --coral:#ff5d4f;
+  --coral-dk:#c7362b;
+  --ink:#2b2350;
+  --muted:#5f6c8c;
+  --card:#ffffffeb;
+  --wood:#c9813f;
+  --wood-dk:#8a4b1d;
+  --fg:var(--ink);
+  --gold:var(--sun);
+  --gold-hi:var(--sun);
+  --blood:var(--coral);
+  --foam:#ffffff;
+  --parch:#fff3d6;
+  --wood-hi:var(--wood);
+  --t1:#ff5d4f; --t2:#ffb000; --t3:#12b8a0; --t4:#8b65ff; --t5:#ff7a1a;
+  --f-display:"Lobster","Pacifico","Comic Sans MS",cursive;
+  --f-ui:"Rubik","Nunito","Trebuchet MS",Arial,sans-serif;
+  --f-body:"Nunito","Rubik","Trebuchet MS",Arial,sans-serif;
+  --f-stamp:"Rubik","Trebuchet MS",Arial,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--sky);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;overflow-x:hidden}
+#bgwrap{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--sky)}
+.bgl{position:absolute;inset:-3%;background:var(--sky) center/cover no-repeat;opacity:0;transition:opacity 1.4s ease;animation:drift 50s ease-in-out infinite alternate}
+.bgl.on{opacity:1}
+body[data-scene="board"] .bgl{filter:blur(2px) saturate(1.15)}
+#bgveil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(189,238,255,0) 0%,rgba(189,238,255,.12) 45%,rgba(189,238,255,.5) 100%);transition:background .6s}
+body[data-scene="board"] #bgveil{background:linear-gradient(180deg,rgba(189,238,255,.25),rgba(140,225,245,.35))}
+@keyframes drift{from{transform:scale(1) translate(0,0)}to{transform:scale(1.06) translate(-1%,-1%)}}
+.banner{position:fixed;left:50%;top:max(18px,env(safe-area-inset-top,0px));z-index:75;display:flex;align-items:center;gap:14px;padding:10px 26px 10px 10px;border-radius:999px;background:#fff;border:4px solid var(--sun);box-shadow:0 6px 0 var(--sun-dk),0 18px 34px rgba(43,35,80,.3);transform:translateX(-50%);animation:bannerIn 3.6s ease forwards;pointer-events:none;max-width:calc(100% - 32px)}
+.banner img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--sea);flex:none}
+.banner small{display:block;font-family:var(--f-ui);font-weight:800;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--sea-dk)}
+.banner b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(1.4rem,3vw,2rem);line-height:1.1;color:var(--coral)}
+@keyframes bannerIn{0%{transform:translate(-50%,-140%)}12%{transform:translate(-50%,8px)}18%{transform:translate(-50%,0)}85%{transform:translate(-50%,0);opacity:1}100%{transform:translate(-50%,-140%);opacity:0}}
+.route{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:4px}
+.route button{position:relative;aspect-ratio:1;border-radius:50%;border:3px solid #fff;padding:0;background:#cfd8e3 center/cover no-repeat;box-shadow:0 3px 0 rgba(10,120,168,.3);transition:transform .15s}
+.route button:not(:disabled):hover{transform:scale(1.1)}
+.route button:disabled{cursor:default;filter:grayscale(1) brightness(1.1);opacity:.55}
+.route button:disabled::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-ui);font-weight:900;font-size:1.2rem;color:#fff;text-shadow:0 2px 0 rgba(43,35,80,.5)}
+.route button.here{border-color:var(--coral);box-shadow:0 0 0 3px var(--sun),0 3px 0 rgba(10,120,168,.3)}
+.route button.view{outline:3px dashed var(--sea-dk);outline-offset:2px}
+.route-name{margin:10px 0 0;font-weight:800;font-size:.95rem}
+.route-name span{color:var(--coral)}
+.route-hint{margin:.3em 0 0;font-size:.85rem;color:var(--muted);font-weight:600}
+.app{position:relative;z-index:1;min-height:100%;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 28px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+.stk{display:block;object-fit:contain;filter:drop-shadow(0 4px 4px rgba(43,35,80,.25));pointer-events:none;user-select:none}
+.portrait{border-radius:50%;object-fit:cover;border:4px solid var(--tc,var(--sun));box-shadow:0 4px 0 rgba(43,35,80,.25);flex:none;background:#fff}
+
+/* game-logo lettering */
+.gold-text{font-family:var(--f-display);font-weight:400;color:var(--sun);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink),0 10px 18px rgba(43,35,80,.3);letter-spacing:.01em}
+
+/* ---------- chunky buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;border:3px solid #fff;background:linear-gradient(180deg,#ffe07a,var(--sun));color:var(--ink);padding:.6em 1.3em;border-radius:999px;font-family:var(--f-ui);font-weight:800;font-size:1.05rem;letter-spacing:.01em;box-shadow:0 5px 0 var(--sun-dk),0 9px 16px rgba(43,35,80,.22);transition:transform .12s,filter .12s,box-shadow .12s}
+.btn:hover{filter:brightness(1.06);transform:translateY(-2px);box-shadow:0 7px 0 var(--sun-dk),0 12px 18px rgba(43,35,80,.22)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--sun-dk),0 3px 6px rgba(43,35,80,.2)}
+.btn.primary{background:linear-gradient(180deg,#ff8a6f,var(--coral));color:#fff;box-shadow:0 5px 0 var(--coral-dk),0 9px 16px rgba(43,35,80,.22)}
+.btn.primary:hover{box-shadow:0 7px 0 var(--coral-dk),0 12px 18px rgba(43,35,80,.22)}
+.btn.primary:active{box-shadow:0 1px 0 var(--coral-dk)}
+.btn.ghost{background:linear-gradient(180deg,#fff,#e6f8ff);color:var(--sea-dk);box-shadow:0 5px 0 #8fd3ea,0 9px 16px rgba(43,35,80,.18)}
+.btn.ghost:active{box-shadow:0 1px 0 #8fd3ea}
+.btn.small{font-size:.92rem;padding:.42em .95em}
+.btn svg{width:1.1em;height:1.1em;flex:none}
+.btn .stk{width:1.8em;height:1.8em;margin-block:-.45em}
+.icon-btn{width:46px;height:46px;padding:0}
+.icon-btn svg{width:20px;height:20px}
+
+/* ---------- setup ---------- */
+.setup{max-width:1000px;margin:0 auto;display:grid;gap:22px;padding-top:1vh}
+.hero{position:relative;text-align:center;padding:18px 0 4px}
+.compass{display:none}
+.eyebrow{display:inline-block;font-family:var(--f-ui)!important;font-weight:800;letter-spacing:.14em!important;font-size:.92rem;color:#fff!important;background:var(--sea-dk);padding:.3em 1em;border-radius:999px;box-shadow:0 4px 0 rgba(43,35,80,.3);text-transform:uppercase}
+.hero h1{margin:.15em 0 0;font-size:clamp(3.4rem,11vw,7.8rem);line-height:1;text-wrap:balance}
+.hero .sub{display:inline-block;font-weight:800;color:var(--ink);background:var(--card);padding:.4em 1.1em;border-radius:999px;margin-top:.5em;font-size:1.05rem;box-shadow:0 4px 0 rgba(10,120,168,.3)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+.setup-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+@media (max-width:820px){.setup-grid{grid-template-columns:1fr}}
+.panel{background:var(--card);border:4px solid #fff;border-radius:26px;padding:20px 22px;box-shadow:0 7px 0 rgba(10,120,168,.28),0 18px 30px rgba(43,35,80,.16);min-width:0;color:var(--ink)}
+.panel h2{font-family:var(--f-display);font-weight:400;font-size:1.9rem;margin:0 0 12px;color:var(--coral);line-height:1.1}
+.seg{display:inline-flex;gap:4px;padding:4px;background:#e3f6fd;border-radius:999px;margin-bottom:14px}
+.seg button{background:transparent;border:0;padding:.42em 1.1em;font-family:var(--f-ui);font-weight:800;font-size:1rem;color:var(--sea-dk);border-radius:999px}
+.seg button[aria-pressed="true"]{background:var(--sun);color:var(--ink);box-shadow:0 3px 0 var(--sun-dk)}
+.team-inputs{display:grid;gap:10px}
+.team-input{display:flex;align-items:center;gap:12px}
+.team-input .portrait{width:52px;height:52px;border-width:3px}
+.team-input input{flex:1;min-width:0;background:#fff;border:3px solid #cdeefa;border-radius:16px;padding:.6em .9em;color:var(--ink);font-family:var(--f-ui);font-weight:700;font-size:1.05rem}
+.team-input input:focus{border-color:var(--tc)}
+.setup-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
+.rules{margin:0;padding-left:1.3em;display:grid;gap:8px;font-weight:600}
+.rules b{color:var(--coral)}
+.legend-inline{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
+.legend-inline svg,.legend-inline img{width:28px;height:28px}
+.bosun{display:flex;gap:12px;align-items:center;margin:-2px 0 12px}
+.bosun img{width:60px;height:60px}
+.bosun span{position:relative;background:#e3f6fd;border-radius:18px;padding:.5em .9em;font-weight:700;color:var(--sea-dk)}
+.resume{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;background:var(--card);border:4px dashed var(--sun);border-radius:22px;padding:12px 18px;font-weight:700}
+
+/* ---------- top bar & fleet ---------- */
+.topbar{position:relative;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;max-width:1320px;margin:0 auto 16px;padding:8px 14px;border-radius:24px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.08) 0 3px,transparent 3px 26px),linear-gradient(180deg,#e0a062,var(--wood) 55%,#ad6a30);border:4px solid #f6d3a6;box-shadow:0 6px 0 var(--wood-dk),0 14px 24px rgba(43,35,80,.2)}
+.brand{font-size:2rem;display:flex;align-items:center;gap:8px;line-height:1}
+.brand .gold-text{-webkit-text-stroke:2px var(--ink);text-shadow:0 3px 0 var(--ink)}
+.brand .stk{width:50px;height:50px;margin-block:-10px}
+.brand .stk.fl{width:38px;height:38px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fleet{display:grid;grid-template-columns:repeat(var(--n,2),minmax(0,1fr));gap:14px;max-width:1320px;margin:0 auto 6px}
+@media (max-width:640px){.fleet{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ship-card{position:relative;overflow:hidden;display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:24px;background:var(--card);border:4px solid #fff;text-align:left;min-width:0;box-shadow:0 6px 0 rgba(10,120,168,.25);transition:transform .2s,box-shadow .2s,border-color .2s}
+.ship-card .portrait{width:62px;height:62px}
+.ship-card .ghost-ship{position:relative;width:clamp(54px,6vw,78px);margin-block:-10px;flex:none}
+@media (max-width:640px){.ship-card .ghost-ship{display:none}}
+.ship-card .meta,.ship-card .score{position:relative}
+.ship-card .meta{min-width:0;flex:1}
+.ship-card .name{font-family:var(--f-ui);font-weight:800;font-size:1.2rem;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ship-card .turn-tag{font-family:var(--f-ui);font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ship-card .score{font-family:var(--f-ui);font-weight:900;font-size:2.6rem;line-height:1;color:var(--tc);font-variant-numeric:tabular-nums;-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;text-shadow:0 3px 0 var(--ink)}
+.ship-card.active{border-color:var(--tc);box-shadow:0 6px 0 var(--tc),0 0 0 4px rgba(255,255,255,.7),0 14px 26px rgba(43,35,80,.2);transform:translateY(-3px)}
+.ship-card.active .turn-tag{color:#fff;background:var(--tc);display:inline-block;padding:.1em .6em;border-radius:999px;animation:pulse 1.4s ease-in-out infinite}
+.ship-card.active .ghost-ship{animation:bob 2.6s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.07)}}
+.score.bump{animation:bump .7s ease}
+@keyframes bump{0%{transform:scale(1)}30%{transform:scale(1.5) rotate(-6deg)}100%{transform:scale(1)}}
+
+/* ---------- battle layout ---------- */
+.battle{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;max-width:1320px;margin:0 auto;align-items:start}
+@media (max-width:1000px){.battle{grid-template-columns:minmax(0,1fr)}}
+.board-frame{--hang:clamp(18px,2.8vw,32px);position:relative;justify-self:center;margin:var(--hang);margin-bottom:calc(var(--hang) * 2.6);width:min(calc(100% - 2 * var(--hang)),max(280px,min(860px,calc((100dvh - 290px) * 1.13))));padding:clamp(10px,1.6vw,18px);border-radius:34px;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 3px,transparent 3px 30px),linear-gradient(180deg,#e7a96b,var(--wood) 50%,#a5622a);
+  border:5px solid #f8d9b0;box-shadow:0 9px 0 var(--wood-dk),0 26px 40px rgba(43,35,80,.3)}
+.corner{position:absolute;width:calc(var(--hang) * 2.1);height:calc(var(--hang) * 2.1);z-index:2}
+.corner.tl{left:0;top:0;transform:translate(-50%,-50%) rotate(-12deg)}
+.corner.tr{left:100%;top:0;transform:translate(-50%,-50%) rotate(10deg)}
+.corner.bl{left:0;top:100%;transform:translate(-50%,-50%) rotate(-6deg)}
+.corner.br{left:100%;top:100%;transform:translate(-50%,-50%) rotate(8deg)}
+.board-frame .flank{position:absolute;bottom:calc(var(--hang) * -2.6);width:calc(var(--hang) * 3);z-index:2}
+.board-frame .flank.l{left:16%}.board-frame .flank.r{right:16%;transform:scaleX(-1)}
+@media (max-width:640px){.board-frame .flank{display:none}}
+.board{display:grid;grid-template-columns:2.3em repeat(7,minmax(0,1fr));gap:clamp(4px,.7vw,8px);padding:clamp(8px,1.1vw,14px);border-radius:24px;
+  background:radial-gradient(circle at 20% 15%,rgba(255,255,255,.35) 0 6%,transparent 7%),radial-gradient(circle at 85% 70%,rgba(255,255,255,.22) 0 4%,transparent 5%),linear-gradient(180deg,#3fd0ee,var(--sea) 55%,#1194c8);
+  box-shadow:inset 0 4px 0 rgba(255,255,255,.4),inset 0 -6px 0 rgba(10,120,168,.5)}
+.board.shake{animation:shake .4s ease}
+@keyframes shake{20%{transform:translate(-5px,2px) rotate(-.4deg)}40%{transform:translate(4px,-3px) rotate(.4deg)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,-1px)}}
+.lbl{display:grid;place-items:center;align-self:center;justify-self:center;width:min(100%,2.2em);aspect-ratio:1;border-radius:50%;font-family:var(--f-ui);font-weight:900;font-size:clamp(.95rem,1.9vw,1.45rem);color:var(--ink);background:radial-gradient(circle at 35% 30%,#fff3b0,var(--sun) 55%,var(--sun-dk));box-shadow:inset 0 0 0 3px rgba(255,255,255,.55),0 3px 0 #a86f00}
+.board>div:not(.lbl):not(.cell){visibility:hidden}
+.cell{position:relative;aspect-ratio:1;border-radius:clamp(10px,1.4vw,18px);border:3px solid rgba(255,255,255,.75);
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55) 0 12%,transparent 13%),linear-gradient(180deg,#8eeefa,#33c3e6 60%,#20a9d6);
+  box-shadow:0 5px 0 #0d7fae,0 7px 10px rgba(10,80,120,.25);display:grid;place-items:center;padding:0;overflow:hidden;transition:transform .15s,box-shadow .15s,filter .15s}
+.cell .coord{font-family:var(--f-ui);font-weight:900;font-size:clamp(.8rem,1.6vw,1.25rem);color:#073b5c;text-shadow:0 1px 0 rgba(255,255,255,.7);transition:transform .15s}
+.cell:not([data-state]):hover{transform:translateY(-4px) scale(1.04);filter:brightness(1.05);box-shadow:0 9px 0 #0d7fae,0 0 0 4px var(--sun),0 12px 18px rgba(10,80,120,.3)}
+.cell:not([data-state]):hover .coord{transform:scale(1.25);color:var(--coral-dk)}
+.cell:not([data-state]):active{transform:translateY(3px);box-shadow:0 2px 0 #0d7fae}
+.cell[data-state]{cursor:default;transform:translateY(3px);box-shadow:0 2px 0 rgba(10,80,120,.5);background:linear-gradient(180deg,#d8f6fd,#a9e6f5)}
+.cell[data-state] svg{width:72%;height:72%}
+.cell[data-state] .stk{width:86%;height:86%}
+.cell[data-state="hit"]{background:radial-gradient(circle,#fff 0 30%,color-mix(in srgb,var(--tc) 55%,#fff) 70%);border-color:var(--tc)}
+.cell[data-state="hit"] .pts{position:absolute;right:3px;bottom:3px;padding:0 .35em;border-radius:999px;background:var(--tc);font-family:var(--f-ui);font-weight:900;font-size:clamp(.65rem,1.3vw,1rem);line-height:1.4;color:#fff;-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
+.cell[data-state="wreck"]{background:linear-gradient(180deg,#d5dde6,#aebccc)}
+.cell[data-state="treasure"]{background:radial-gradient(circle,#fff6c8,#ffd560)}
+.cell[data-state="kraken"]{background:radial-gradient(circle,#efe4ff,#c8b2ff)}
+.cell[data-state="kraken"] svg{color:#7a45d8}
+.cell.pop{animation:pop .5s ease}
+.cell .ocoord{position:absolute;left:3px;top:2px;padding:0 .35em;border-radius:999px;background:#fff;color:#073b5c;font-family:var(--f-ui);font-weight:900;font-size:clamp(.6rem,1.15vw,.9rem);line-height:1.4;box-shadow:0 1px 0 rgba(10,80,120,.35)}
+@keyframes pop{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:translateY(3px) scale(1)}}
+
+/* side */
+.side{display:grid;gap:16px}
+.side .panel{padding:16px 18px}
+.ph{display:flex;align-items:center;gap:10px}
+.ph .stk{width:42px;height:42px;margin-block:-6px}
+.fire-form{display:flex;gap:8px}
+.fire-form input{flex:1;min-width:0;background:#fff;border:3px solid #cdeefa;border-radius:16px;padding:.35em .6em;color:var(--coral);font-family:var(--f-ui);font-weight:900;font-size:1.6rem;text-transform:uppercase;letter-spacing:.06em;text-align:center}
+.hint{font-size:.9rem;color:var(--muted);margin:.5em 0 0;font-weight:600}
+.err{color:var(--coral-dk);font-weight:700;font-size:.9rem;min-height:1.3em;margin:.4em 0 0}
+.progress{height:14px;border-radius:999px;background:#e3f6fd;overflow:hidden;margin-top:8px;box-shadow:inset 0 2px 0 rgba(10,120,168,.15)}
+.progress i{display:block;height:100%;border-radius:999px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 8px,transparent 8px 16px),linear-gradient(90deg,var(--sun),#ff9e2c);transition:width .5s}
+.legend{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.95rem;font-weight:700}
+.legend li{display:flex;align-items:center;gap:10px}
+.legend .sw{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#e3f6fd;border:2px solid #fff;flex:none}
+.legend .sw svg{width:24px;height:24px}
+.legend .sw .stk{width:34px;height:34px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.92rem;max-height:220px;overflow:auto;font-weight:600}
+.log li{display:flex;gap:8px;align-items:baseline;border-bottom:2px dotted #cdeefa;padding-bottom:5px}
+.log .c{font-family:var(--f-ui);font-weight:900;color:var(--coral);min-width:2.2em}
+.log .empty{color:var(--muted);font-style:italic}
+
+/* cannonball */
+.ball{position:fixed;left:0;top:0;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#999,#222 70%);box-shadow:0 0 12px rgba(255,160,40,.9);z-index:50;pointer-events:none}
+.burst{position:fixed;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;pointer-events:none;z-index:51;background:radial-gradient(circle,#fff 0%,#ffe066 25%,rgba(255,110,60,.75) 45%,transparent 70%);animation:burst .6s ease-out forwards}
+.burst.water{background:radial-gradient(circle,#fff 0%,rgba(140,230,250,.8) 35%,transparent 65%)}
+@keyframes burst{from{transform:scale(.2);opacity:1}to{transform:scale(1.7);opacity:0}}
+
+/* ---------- modal scroll ---------- */
+.overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(10,90,130,.45);backdrop-filter:blur(5px);overflow:auto}
+.scroll{position:relative;width:min(980px,100%);margin:auto;padding:clamp(26px,4vw,46px) clamp(20px,4.5vw,60px);color:var(--ink);border-radius:30px;border:5px solid #fff;
+  background:radial-gradient(ellipse at 90% 10%,rgba(255,255,255,.7),transparent 40%),linear-gradient(180deg,#fff8e4,var(--parch));
+  box-shadow:0 10px 0 var(--sand-dk),0 30px 60px rgba(43,35,80,.35);animation:unroll .45s cubic-bezier(.2,.9,.3,1.25)}
+@keyframes unroll{from{transform:scale(.6) rotate(-3deg);opacity:0}to{transform:none;opacity:1}}
+.scroll-deco{position:absolute;left:-24px;top:-30px;width:clamp(56px,7vw,84px);transform:rotate(-14deg);z-index:2}
+.q-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;justify-content:space-between;border-bottom:3px dashed var(--sand-dk);padding-bottom:12px;margin-bottom:16px}
+.q-coord{display:inline-grid;place-items:center;min-width:2.1em;padding:.1em .35em;border-radius:18px;background:var(--sea);color:#fff;font-family:var(--f-ui);font-weight:900;font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.1;box-shadow:0 4px 0 var(--sea-dk)}
+.q-num{font-family:var(--f-ui);font-weight:800;font-size:clamp(1.2rem,2.2vw,1.6rem)}
+.seal{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:clamp(68px,7vw,86px);height:clamp(68px,7vw,86px);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe98a,var(--sun) 55%,var(--sun-dk));color:var(--ink);font-family:var(--f-ui);font-weight:900;font-size:clamp(1.7rem,2.8vw,2.3rem);line-height:1;box-shadow:inset 0 0 0 4px rgba(255,255,255,.6),0 4px 0 #a86f00;transform:rotate(-8deg);animation:wobble 2.4s ease-in-out infinite}
+.seal small{font-size:.8rem;font-weight:800}
+@keyframes wobble{50%{transform:rotate(8deg) scale(1.05)}}
+.q-text{font-size:clamp(1.3rem,2.6vw,2rem);font-weight:700;line-height:1.38;margin:0;text-wrap:pretty;max-width:42ch}
+.q-body{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:start}
+@media (max-width:640px){.q-body{grid-template-columns:1fr}}
+.timer{position:relative;width:112px;height:112px;flex:none}
+.timer svg{width:100%;height:100%;transform:rotate(-90deg)}
+.timer .t-bg{fill:#fff;stroke:#e3f6fd;stroke-width:10}
+.timer .t-fg{fill:none;stroke:var(--t3);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .3s}
+.timer.low .t-fg{stroke:var(--coral)}
+.timer.low .t-num{color:var(--coral);animation:pulse .5s ease-in-out infinite}
+.timer .t-num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-ui);font-weight:900;font-size:2.2rem;color:var(--ink)}
+.timer-ctl{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.timer-ctl button{background:#e3f6fd;border:2px solid #fff;border-radius:999px;padding:5px 10px;color:var(--sea-dk);display:inline-flex;box-shadow:0 3px 0 #8fd3ea}
+.timer-ctl svg{width:16px;height:16px}
+.answer{margin-top:20px;padding:16px 20px;border-radius:22px;background:#e6fbf4;border:3px solid var(--t3);font-size:clamp(1.15rem,2.2vw,1.55rem);font-weight:700;line-height:1.4;animation:fadeup .35s ease}
+.answer b{font-family:var(--f-display);font-weight:400;color:var(--t3);font-size:1.15em}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.q-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:22px;padding-top:16px;border-top:3px dashed var(--sand-dk)}
+.q-actions .who{font-family:var(--f-display);font-size:1.5rem;color:var(--coral);margin-right:4px}
+.award{border:3px solid var(--tc);background:#fff;color:var(--ink);border-radius:999px;padding:.4em .9em .4em .4em;font-family:var(--f-ui);font-weight:800;font-size:1.02rem;display:inline-flex;align-items:center;gap:8px;max-width:100%;box-shadow:0 4px 0 var(--tc);transition:transform .12s}
+.award span.nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:14ch}
+.award b{background:var(--tc);color:#fff;border-radius:999px;padding:0 .5em}
+.award.cur{background:color-mix(in srgb,var(--tc) 18%,#fff)}
+.award:hover{transform:translateY(-2px)}
+.award:active{transform:translateY(3px);box-shadow:0 1px 0 var(--tc)}
+.award .portrait,.award-dark .portrait{width:34px;height:34px;border-width:2px;box-shadow:none}
+.nobody{background:#fff;border:3px dashed #aebccc;color:var(--muted);border-radius:999px;padding:.45em 1em;font-family:var(--f-ui);font-weight:800;font-size:1rem}
+.ink-btn{background:linear-gradient(180deg,#ff8a6f,var(--coral));color:#fff;border:3px solid #fff;border-radius:999px;padding:.55em 1.3em;font-family:var(--f-ui);font-weight:800;font-size:1.1rem;display:inline-flex;gap:8px;align-items:center;box-shadow:0 5px 0 var(--coral-dk)}
+.ink-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--coral-dk)}
+.ink-btn svg{width:18px;height:18px}
+.close-x{position:absolute;top:12px;right:14px;background:#e3f6fd;border:0;border-radius:50%;color:var(--sea-dk);padding:8px;display:inline-flex}
+.close-x svg{width:20px;height:20px}
+.close-x:hover{background:#cdeefa}
+.special{display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:560px){.special{grid-template-columns:1fr;text-align:center}.special .art{margin:0 auto}}
+.special .art{width:clamp(110px,16vw,170px);height:clamp(110px,16vw,170px);animation:bob 3s ease-in-out infinite}
+.special h3{font-family:var(--f-display);font-weight:400;font-size:clamp(2.2rem,4.4vw,3.2rem);margin:0;line-height:1.05;color:var(--coral)}
+.special p{font-size:clamp(1.15rem,2vw,1.45rem);font-weight:700;margin:.4em 0 0}
+.rebus{margin-top:18px;background:#fff;border:4px solid var(--sea);border-radius:20px;padding:10px;max-width:520px;overflow:hidden}
+.rebus svg{width:100%;height:auto;display:block}
+
+/* ---------- captains ---------- */
+.captains{max-width:1000px;margin:0 auto;display:grid;gap:18px;justify-items:center;text-align:center;padding-top:1vh}
+.cap-title{display:flex;align-items:center;justify-content:center;gap:clamp(8px,2vw,24px)}
+.cap-title .stk{width:clamp(48px,8vw,96px)}
+.captains h1{font-size:clamp(2.6rem,7.5vw,5rem);margin:0;line-height:1.05}
+.captains .lead{font-size:clamp(1.05rem,2vw,1.35rem);font-weight:700;max-width:44ch;margin:0;color:var(--ink);background:var(--card);border-radius:22px;padding:.6em 1.2em;box-shadow:0 5px 0 rgba(217,148,0,.35)}
+.tiles,.slots{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(6px,1.2vw,14px)}
+.tile,.slot{width:clamp(44px,10vw,94px);height:clamp(54px,12vw,108px);border-radius:clamp(12px,1.8vw,22px);display:grid;place-items:center;font-family:var(--f-ui);font-weight:900;font-size:clamp(1.9rem,6vw,4rem);line-height:1}
+.tile{border:4px solid #fff;background:linear-gradient(180deg,#fff,var(--sand));color:var(--coral);box-shadow:0 6px 0 var(--sand-dk),0 12px 18px rgba(43,35,80,.25);transition:transform .15s,opacity .2s;animation:bob 3s ease-in-out infinite}
+.tile:nth-child(2n){animation-delay:-1s}.tile:nth-child(3n){animation-delay:-2s}
+.tile:hover{transform:translateY(-6px) rotate(-4deg) scale(1.05);animation-play-state:paused}
+.tile.used{opacity:.2;pointer-events:none;animation:none}
+.slot{border:4px dashed rgba(255,255,255,.9);background:rgba(255,255,255,.35);color:var(--ink);padding:0}
+.slot.filled{border-style:solid;background:#fff;box-shadow:0 5px 0 rgba(10,120,168,.3)}
+.slots.win .slot{border-color:#fff;background:var(--sun);color:var(--ink);animation:pop .5s ease both}
+.slots.win .slot:nth-child(2){animation-delay:.06s}.slots.win .slot:nth-child(3){animation-delay:.12s}.slots.win .slot:nth-child(4){animation-delay:.18s}.slots.win .slot:nth-child(5){animation-delay:.24s}.slots.win .slot:nth-child(6){animation-delay:.3s}.slots.win .slot:nth-child(7){animation-delay:.36s}
+.reveal-word{font-family:var(--f-display);font-size:clamp(3.4rem,13vw,9rem);line-height:1.1;color:var(--coral);-webkit-text-stroke:4px #fff;paint-order:stroke fill;text-shadow:0 7px 0 var(--coral-dk),0 16px 26px rgba(43,35,80,.3);animation:pop .6s ease}
+.row-center{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
+.captains .panel{width:100%}
+.award-dark{border:3px solid var(--tc);background:#fff;color:var(--ink);border-radius:999px;padding:.35em .9em .35em .35em;font-family:var(--f-ui);font-weight:800;font-size:1rem;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 var(--tc)}
+.award-dark b{background:var(--tc);color:#fff;border-radius:999px;padding:0 .5em}
+.award-dark:active{transform:translateY(3px);box-shadow:0 1px 0 var(--tc)}
+
+/* ---------- final ---------- */
+.final{max-width:820px;margin:0 auto;text-align:center;display:grid;gap:16px;justify-items:center;padding-top:2vh}
+.final h1{font-size:clamp(3rem,10vw,6.4rem);margin:0;line-height:1.05}
+.win-card{display:flex;align-items:center;justify-content:center;gap:clamp(12px,3vw,30px);flex-wrap:wrap}
+.win-card .portrait{width:clamp(130px,22vw,200px);height:clamp(130px,22vw,200px);border-width:8px;box-shadow:0 0 0 6px #fff,0 10px 0 6px var(--sun-dk),0 0 60px var(--sun);animation:bob 3s ease-in-out infinite}
+.win-card .stk{width:clamp(70px,11vw,120px)}
+.final .winner{font-family:var(--f-display);font-size:clamp(2rem,5vw,3.2rem);line-height:1.1;color:var(--tc);-webkit-text-stroke:3px #fff;paint-order:stroke fill;text-shadow:0 4px 0 rgba(43,35,80,.35)}
+.rank{list-style:none;padding:0;margin:0;display:grid;gap:10px;width:100%}
+.rank li{display:grid;grid-template-columns:3em 56px minmax(0,1fr) auto;align-items:center;gap:12px;padding:8px 18px 8px 10px;border-radius:999px;background:var(--card);border:4px solid #fff;box-shadow:0 5px 0 rgba(217,148,0,.35);text-align:left}
+.rank li:first-child{border-color:var(--sun)}
+.rank .place{display:grid;place-items:center;width:2.2em;height:2.2em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3b0,var(--sun) 55%,var(--sun-dk));font-family:var(--f-ui);font-weight:900;font-size:1.3rem;color:var(--ink)}
+.rank .portrait{width:52px;height:52px;border-width:3px}
+.rank .nm{font-family:var(--f-ui);font-weight:800;font-size:1.3rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .sc{font-family:var(--f-ui);font-weight:900;font-size:2rem;color:var(--tc);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill;font-variant-numeric:tabular-nums}
+.coin{position:fixed;top:-40px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6c8,var(--sun) 55%,var(--sun-dk));box-shadow:inset 0 0 0 3px rgba(170,110,0,.45);z-index:70;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#fff;color:var(--ink);padding:.6em 1.4em;border-radius:999px;border:3px solid var(--sun);font-family:var(--f-ui);font-weight:800;font-size:1.05rem;box-shadow:0 5px 0 var(--sun-dk),0 12px 26px rgba(43,35,80,.25);z-index:80;animation:fadeup .3s ease}
+.confirm-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.confirm-row>span{font-family:var(--f-ui);font-weight:800;color:#fff;text-shadow:0 2px 0 var(--wood-dk)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* solo mode */
+body.solo #btn-captains{display:none}
+.vs{text-align:center;font-family:var(--f-display);font-size:1.4rem;color:var(--coral);margin:-4px 0}
+.bot-row{align-items:center}
+.bot-meta{flex:1;min-width:0;display:grid;gap:6px}
+.bot-meta b{font-family:var(--f-ui);font-weight:800;font-size:1.05rem}
+#mode-seg{display:flex;flex-wrap:wrap;max-width:100%}
+#mode-seg button{flex:1 1 auto;white-space:nowrap}
+.seg.diff{margin:0;display:flex;flex-wrap:wrap;max-width:100%}
+.seg.diff button{flex:1 1 auto}
+.seg.diff button{padding:.32em .8em;font-size:.92rem}
+.solo-hint{margin:6px 0 0;font-size:.92rem;font-weight:700;color:var(--sea-dk);background:#e3f6fd;border-radius:14px;padding:.6em .9em}
+body.bot-turn .cell:not([data-state]){cursor:wait}
+body.bot-turn .board{filter:saturate(.85)}
+.q-who{font-family:var(--f-body);font-weight:700;font-size:.72em;color:var(--muted)}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:#fff;border:3px solid #cdeefa;border-radius:18px;padding:.7em 1em;font-family:var(--f-ui);font-weight:700;font-size:clamp(1rem,2vw,1.2rem);color:var(--ink);box-shadow:0 4px 0 #9fd8ea;transition:transform .12s,border-color .12s}
+.opt:not(:disabled):hover{border-color:var(--sun);transform:translateY(-2px)}
+.opt:not(:disabled):active{transform:translateY(3px);box-shadow:0 1px 0 #9fd8ea}
+.opt .ltr{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sun);display:grid;place-items:center;font-weight:900;font-size:.95rem}
+.opts .opt:nth-child(1) .ltr::before{content:"А"}.opts .opt:nth-child(2) .ltr::before{content:"Б"}.opts .opt:nth-child(3) .ltr::before{content:"В"}
+.opt:disabled{cursor:default}
+.opt.chosen{border-color:var(--sea-dk);box-shadow:0 0 0 3px var(--sea-lt)}
+.opt.right{border-color:var(--t3);background:#e6fbf4;box-shadow:0 4px 0 var(--t3)}
+.opt.right .ltr{background:var(--t3);color:#fff}
+.opt.wrong{border-color:var(--coral);background:#fff0ee;box-shadow:0 4px 0 var(--coral);animation:shakeX .4s}
+.opt.wrong .ltr{background:var(--coral);color:#fff}
+@keyframes shakeX{25%{transform:translateX(-6px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.answer.miss{background:#fff4e6;border-color:var(--sun-dk)}
+.answer.miss b{color:var(--coral)}
+.bot-think{display:flex;align-items:center;gap:5px;margin:14px 0 0;font-family:var(--f-ui);font-weight:800;color:var(--sea-dk)}
+.bot-think span{width:9px;height:9px;border-radius:50%;background:var(--sea);animation:dot 1s infinite}
+.bot-think span:nth-child(2){animation-delay:.15s}.bot-think span:nth-child(3){animation-delay:.3s;margin-right:6px}
+@keyframes dot{50%{transform:translateY(-6px);opacity:.4}}
+.q-body.no-timer{grid-template-columns:1fr}
+
+/* ---------- phones ---------- */
+@media (max-width:640px){
+  .app{padding-block:10px 22px}
+  #mode-seg button{padding:.42em .7em;font-size:.92rem}
+  .panel{padding:16px}
+  .topbar{padding:6px 10px;gap:8px;border-radius:18px;margin-bottom:12px}
+  .brand{font-size:1.45rem}.brand .stk{width:38px;height:38px}.brand .stk.fl{display:none}
+  .tools{gap:6px}
+  .tools .btn.small{font-size:.8rem;padding:.38em .75em}
+  #btn-full{display:none}
+  #btn-captains{font-size:0!important;width:40px;height:40px;padding:0}
+  #btn-captains svg{width:18px;height:18px}
+  .icon-btn{width:40px;height:40px}
+  .fleet{gap:8px;margin-bottom:2px}
+  .ship-card{gap:8px;padding:6px 10px 6px 6px;border-radius:18px;border-width:3px}
+  .ship-card .portrait{width:40px;height:40px;border-width:3px}
+  .ship-card .name{font-size:.92rem;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.15}
+  .ship-card .turn-tag{font-size:.62rem;letter-spacing:.04em}
+  .ship-card .score{font-size:1.8rem}
+  .board-frame{--hang:14px;padding:6px;border-radius:22px;border-width:3px;width:calc(100% - 2 * var(--hang));margin-bottom:calc(var(--hang) * 1.6)}
+  .board{grid-template-columns:1.5em repeat(7,minmax(0,1fr));gap:4px;padding:6px;border-radius:16px}
+  .lbl{font-size:.8rem;width:1.5em}
+  .cell{border-width:2px;border-radius:9px;box-shadow:0 3px 0 #0d7fae}
+  .cell .coord{font-size:.72rem}
+  .cell .ocoord{font-size:.52rem;left:1px;top:1px;padding:0 .25em}
+  .cell[data-state="hit"] .pts{font-size:.55rem;right:1px;bottom:1px}
+  .side{gap:12px}
+  .side .hint{display:none}
+  .route{grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
+  .route button{border-width:2px}
+  .route-hint{display:none}
+  .overlay{padding:10px;place-items:start center}
+  .scroll{padding:22px 16px 18px;border-radius:22px;border-width:4px}
+  .scroll-deco{width:46px;left:-10px;top:-20px}
+  .q-head{gap:8px;padding-bottom:10px;margin-bottom:12px}
+  .q-coord{font-size:1.5rem;border-radius:12px}
+  .q-num{font-size:1.05rem}
+  .seal{width:56px;height:56px;font-size:1.4rem}
+  .q-text{font-size:1.12rem;line-height:1.4}
+  .q-body{grid-template-columns:minmax(0,1fr) auto;gap:10px}
+  .timer{width:64px;height:64px}
+  .timer .t-num{font-size:1.3rem}
+  .timer .t-bg,.timer .t-fg{stroke-width:12}
+  .timer-ctl{gap:4px}.timer-ctl button{padding:3px 6px}
+  .answer{font-size:1.02rem;padding:12px 14px;border-radius:16px}
+  .q-actions{gap:8px;margin-top:14px;padding-top:12px}
+  .award{font-size:.9rem}
+  .opt{font-size:1rem;padding:.6em .8em;border-radius:14px}
+  .close-x{top:8px;right:8px;padding:6px}
+  .special{gap:12px}
+  .captains .lead{font-size:1rem}
+  .hero h1{font-size:3.3rem}
+  .rank li{grid-template-columns:2.4em 44px minmax(0,1fr) auto;padding:6px 14px 6px 6px}
+  .rank .portrait{width:44px;height:44px}
+  .rank .nm{font-size:1.05rem}
+}
+@media (max-width:420px){.ship-card{padding:5px 8px 5px 5px}.ship-card .portrait{width:32px;height:32px;border-width:2px}.ship-card .score{font-size:1.5rem}.ship-card:not(.active) .turn-tag{display:none}.ship-card .turn-tag{font-size:.56rem}.ship-card .name{font-size:.85rem}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-ship" viewBox="0 0 64 64">
+      <path fill="currentColor" d="M33 4l9 3-9 3z"/>
+      <rect fill="currentColor" x="31.6" y="4" width="2" height="40"/>
+      <rect fill="currentColor" x="17.4" y="12" width="1.8" height="32"/>
+      <rect fill="currentColor" x="46" y="14" width="1.8" height="30"/>
+      <path fill="currentColor" opacity=".9" d="M23 11q10 3 20 0l1 13q-11 3-22 0z"/>
+      <path fill="currentColor" opacity=".9" d="M22 27q11 3 23 0l1 12q-12 3-25 0z"/>
+      <path fill="currentColor" opacity=".8" d="M11 16q7 2 14 0v11q-7 2-14 0z"/>
+      <path fill="currentColor" opacity=".8" d="M11 30q7 2 14 0v9q-7 2-14 0z"/>
+      <path fill="currentColor" opacity=".8" d="M41 18q6 2 12 0v10q-6 2-12 0z"/>
+      <path fill="currentColor" opacity=".8" d="M41 31q6 2 12 0v8q-6 2-12 0z"/>
+      <path fill="currentColor" d="M2 40l4 0 52 0 4-6-4 14q-1 4-6 5H13q-5-1-7-5z"/>
+      <path fill="#000" opacity=".35" d="M10 44h44v2H10z"/>
+      <circle fill="#000" opacity=".45" cx="17" cy="48" r="1.4"/><circle fill="#000" opacity=".45" cx="25" cy="48" r="1.4"/><circle fill="#000" opacity=".45" cx="33" cy="48" r="1.4"/><circle fill="#000" opacity=".45" cx="41" cy="48" r="1.4"/><circle fill="#000" opacity=".45" cx="49" cy="48" r="1.4"/>
+    </symbol>
+    <symbol id="i-skull" viewBox="0 0 64 64">
+      <g fill="currentColor">
+        <rect x="6" y="40" width="52" height="6" rx="3" transform="rotate(28 32 43)"/>
+        <rect x="6" y="40" width="52" height="6" rx="3" transform="rotate(-28 32 43)"/>
+        <path d="M32 6c-12 0-20 8-20 19 0 6 3 10 7 12v6h26v-6c4-2 7-6 7-12 0-11-8-19-20-19z"/>
+      </g>
+      <g fill="#06121c"><ellipse cx="24.5" cy="25" rx="5" ry="5.5"/><ellipse cx="39.5" cy="25" rx="5" ry="5.5"/><path d="M32 31l-3 5h6z"/><rect x="25" y="40" width="2" height="4"/><rect x="31" y="40" width="2" height="4"/><rect x="37" y="40" width="2" height="4"/></g>
+    </symbol>
+    <symbol id="i-water" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><ellipse cx="32" cy="36" rx="8" ry="3.5"/><ellipse cx="32" cy="36" rx="18" ry="8" opacity=".6"/><ellipse cx="32" cy="36" rx="27" ry="12" opacity=".3"/><path d="M32 30V14M26 20l6-8 6 8" opacity=".8"/></g></symbol>
+    <symbol id="i-wreck" viewBox="0 0 64 64"><g fill="currentColor"><path d="M10 40l10 6h26l8-10-2 14q-1 4-6 4H16q-5 0-6-4z"/><path d="M28 12l3 0 2 30h-4z" transform="rotate(-14 30 30)"/><path d="M30 14q10 4 14 14l-12 2z" opacity=".7" transform="rotate(-14 30 30)"/></g><path d="M14 14l36 36M50 14L14 50" stroke="#a8282b" stroke-width="4" stroke-linecap="round" opacity=".75"/></symbol>
+    <symbol id="i-chest" viewBox="0 0 64 64"><g fill="currentColor"><path d="M8 26q0-14 24-14t24 14v4H8z"/><rect x="8" y="32" width="48" height="22" rx="3"/></g><g fill="#5a3a12"><rect x="8" y="30" width="48" height="3"/><rect x="18" y="14" width="4" height="40"/><rect x="42" y="14" width="4" height="40"/><rect x="28" y="28" width="8" height="10" rx="2"/></g><circle cx="32" cy="33" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-kraken" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-linecap="round"><path stroke-width="7" d="M12 58c0-14 6-22 14-26s10-12 4-18"/><path stroke-width="6" d="M40 58c-2-10 2-16 8-20s8-10 3-16"/></g><g fill="#06121c" opacity=".55"><circle cx="15" cy="48" r="1.8"/><circle cx="18" cy="40" r="1.8"/><circle cx="24" cy="34" r="1.8"/><circle cx="31" cy="26" r="1.6"/><circle cx="42" cy="48" r="1.6"/><circle cx="46" cy="40" r="1.6"/><circle cx="52" cy="32" r="1.5"/></g></symbol>
+    <symbol id="i-flag" viewBox="0 0 64 64"><rect x="14" y="6" width="4" height="54" fill="#2a1a0c"/><path fill="currentColor" d="M18 8h34l-7 11 7 11H18z"/><circle cx="31" cy="18" r="4" fill="#fff" opacity=".85"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path fill="currentColor" d="M3 9h4l5-4v14l-5-4H3z"/><path d="M16 9l6 6M22 9l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path fill="currentColor" d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M7 4l13 8-13 8z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" d="M6 4h4v16H6zM14 4h4v16h-4z"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 108-8H7M7 1L4 4l3 3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.2" fill="currentColor"/></symbol>
+    <symbol id="i-cannon" viewBox="0 0 24 24"><path fill="currentColor" d="M3 11l14-5 2 5-14 5z"/><circle cx="8" cy="17" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="21" cy="7" r="1.6" fill="currentColor"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M11 12h11M18 12v4M21 12v3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 200 200"><g fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="86"/><circle cx="100" cy="100" r="40"/></g><g fill="currentColor"><path d="M100 4l10 86-10 10-10-10z"/><path d="M100 196l10-86-10-10-10 10z"/><path d="M4 100l86-10 10 10-10 10z"/><path d="M196 100l-86-10-10 10 10 10z"/><path d="M32 32l64 58-6 6zM168 32l-58 64-6-6zM32 168l58-64 6 6zM168 168l-64-58 6-6z" opacity=".6"/></g></symbol>
+  </defs>
+</svg>
+
+<div id="bgwrap" aria-hidden="true"><div class="bgl" id="bgA"></div><div class="bgl" id="bgB"></div><div id="bgveil"></div></div>
+
+<div class="app">
+
+  <!-- ============ SETUP ============ -->
+  <section id="scr-setup" class="setup">
+    <div class="hero">
+      <svg class="compass" viewBox="0 0 200 200" style="color:var(--gold-hi)"><use href="#i-compass"/></svg>
+      <div class="eyebrow">Фізика · 8 клас</div>
+      <h1 class="gold-text">Морський бій</h1>
+      <div class="sub">Тиск, густина, сила Архімеда та інші таємниці океану</div>
+    </div>
+
+    <div id="resume" class="resume" hidden>
+      <span>На борту є незавершений бій. Продовжити з того самого місця?</span>
+      <div class="confirm-row">
+        <button class="btn primary small" id="btn-resume">Продовжити бій</button>
+      </div>
+    </div>
+
+    <div class="setup-grid">
+      <div class="panel">
+        <h2>Збери флот</h2>
+        <div class="seg" id="mode-seg" role="group" aria-label="Кількість команд">
+          <button data-n="1" aria-pressed="false">1 гравець</button>
+          <button data-n="2" aria-pressed="true">2 команди</button>
+          <button data-n="3" aria-pressed="false">3</button>
+          <button data-n="4" aria-pressed="false">4</button>
+        </div>
+        <div class="team-inputs" id="team-inputs"></div>
+        <div class="setup-actions">
+          <button class="btn primary" id="btn-start-captains"><svg><use href="#i-crown"/></svg>Конкурс капітанів</button>
+          <button class="btn" id="btn-start-board"><svg><use href="#i-cannon"/></svg>Одразу до бою</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Закони моря</h2>
+        <div class="bosun"><img class="portrait" src="assets/captain5.jpg" alt=""><span>Боцман пояснює правила перед відплиттям.</span></div>
+        <ol class="rules">
+          <li>Команди по черзі називають клітинку поля, наприклад <b>Д4</b>.</li>
+          <li>За клітинкою ховається запитання вартістю <b>1, 2 або 3 бали</b>. Правильна відповідь приносить бали.</li>
+          <li>Якщо команда помилилась, учитель може віддати бали суперникам.</li>
+          <li><span class="legend-inline"><img class="stk" src="assets/splash.png" alt=""><b>Вода</b></span> означає промах, хід переходить далі.</li>
+          <li><span class="legend-inline"><img class="stk" src="assets/chest.png" alt=""><b>Скриня</b></span> дає +2 бали, <span class="legend-inline"><svg style="color:#b27be0"><use href="#i-kraken"/></svg><b>Кракен</b></span> забирає 1 бал.</li>
+          <li>Перемагає флот, що набрав найбільше балів.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CAPTAINS ============ -->
+  <section id="scr-captains" class="captains" hidden>
+    <div class="eyebrow" style="font-family:var(--f-display);letter-spacing:.3em;color:var(--muted)">РАУНД ПЕРШИЙ</div>
+    <h1 class="gold-text">Конкурс капітанів</h1>
+    <p class="lead">Поставте літери в правильній послідовності, щоб вийшло слово, безпосередньо пов’язане з фізикою.</p>
+    <div class="tiles" id="tiles"></div>
+    <div class="slots" id="slots" aria-live="polite"></div>
+    <div id="reveal" hidden><div class="reveal-word">ЧАСТОТА</div></div>
+    <div class="row-center">
+      <button class="btn ghost small" id="btn-shuffle"><svg><use href="#i-reset"/></svg>Перемішати</button>
+      <button class="btn ghost small" id="btn-clear">Очистити</button>
+      <button class="btn small" id="btn-reveal"><svg><use href="#i-eye"/></svg>Показати відповідь</button>
+    </div>
+    <div class="panel" style="text-align:center">
+      <div class="row-center" style="margin-bottom:10px">
+        <span style="font-family:var(--f-display);font-weight:700;font-size:1.2rem">Нарахувати капітанові:</span>
+        <div class="seg" role="group" aria-label="Бали" id="cap-pts" style="margin:0">
+          <button data-p="1" aria-pressed="true">1 бал</button>
+          <button data-p="2" aria-pressed="false">2</button>
+          <button data-p="3" aria-pressed="false">3</button>
+        </div>
+      </div>
+      <div class="row-center" id="cap-award"></div>
+    </div>
+    <div class="row-center">
+      <button class="btn primary" id="btn-to-board"><svg><use href="#i-cannon"/></svg>На поле бою</button>
+    </div>
+  </section>
+
+  <!-- ============ BOARD ============ -->
+  <section id="scr-board" hidden>
+    <div class="topbar">
+      <div class="brand"><img class="stk fl" src="assets/flag.png" alt=""><img class="stk" src="assets/ship1.png" alt=""><span class="gold-text">Морський бій</span></div>
+      <div class="tools">
+        <button class="btn ghost small" id="btn-captains"><svg><use href="#i-crown"/></svg>Капітани</button>
+        <button class="btn ghost icon-btn" id="btn-sound" aria-label="Звук"><svg><use href="#i-sound"/></svg></button>
+        <button class="btn ghost icon-btn" id="btn-full" aria-label="На весь екран"><svg><use href="#i-full"/></svg></button>
+        <span class="confirm-row" id="end-wrap"><button class="btn small" id="btn-end">Завершити бій</button></span>
+        <span class="confirm-row" id="new-wrap"><button class="btn ghost small" id="btn-new">Нова гра</button></span>
+      </div>
+    </div>
+    <div class="fleet" id="fleet"></div>
+    <div class="battle">
+      <div class="board-frame"><div class="board" id="board" role="grid" aria-label="Поле бою"></div><img class="stk corner tl" src="assets/compass.png" alt=""><img class="stk corner tr" src="assets/spyglass.png" alt=""><img class="stk corner bl" src="assets/anchor.png" alt=""><img class="stk corner br" src="assets/skull.png" alt=""><img class="stk flank l" src="assets/cannon.png" alt=""><img class="stk flank r" src="assets/cannon.png" alt=""></div>
+      <aside class="side">
+        <div class="panel">
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:8px"><img class="stk" src="assets/cannonfire.png" alt="">Хід бою</h2>
+          <p class="hint" style="margin:0">Натисніть клітинку, яку назвала команда.</p>
+          <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:.92rem"><span>Відкрито клітинок</span><b id="prog-txt" style="font-variant-numeric:tabular-nums">0 / 42</b></div>
+          <div class="progress"><i id="prog" style="width:0%"></i></div>
+        </div>
+        <div class="panel">
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/flag.png" alt="">Маршрут подорожі</h2>
+          <div class="route" id="route"></div>
+          <p class="route-name" id="route-name"></p>
+          <p class="route-hint">Відкривайте клітинки, щоб пливти далі. Натисніть відкрите місце, щоб подивитися на нього знову.</p>
+        </div>
+        <div class="panel">
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/compass.png" alt="">Позначки на мапі</h2>
+          <ul class="legend">
+            <li><span class="sw" style="border-color:var(--gold)"><img class="stk" src="assets/explosion.png" alt=""></span>Влучання команди</li>
+            <li><span class="sw"><img class="stk" src="assets/burning.png" alt=""></span>Ніхто не відповів</li>
+            <li><span class="sw"><img class="stk" src="assets/splash.png" alt=""></span>Вода, промах</li>
+            <li><span class="sw"><img class="stk" src="assets/chest.png" alt=""></span>Скриня, +2 бали</li>
+            <li><span class="sw"><svg style="color:#b27be0"><use href="#i-kraken"/></svg></span>Кракен, −1 бал</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/spyglass.png" alt="">Судновий журнал</h2>
+          <ul class="log" id="log"></ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ FINAL ============ -->
+  <section id="scr-final" class="final" hidden>
+    <div class="eyebrow" style="font-family:var(--f-display);letter-spacing:.3em;color:var(--muted)">БІЙ ЗАВЕРШЕНО</div>
+    <h1 class="gold-text">Перемога!</h1>
+    <div class="win-card" id="win-card"></div>
+    <div class="winner" id="winner"></div>
+    <ol class="rank" id="rank"></ol>
+    <div class="row-center">
+      <button class="btn ghost" id="btn-back-board">Повернутися до поля</button>
+      <button class="btn primary" id="btn-new2">Нова гра</button>
+    </div>
+  </section>
+</div>
+
+<div id="modal-root"></div>
+
+<script>
+(function(){
+"use strict";
+const COLS=['А','Б','В','Г','Д','Е','Ж'];
+const ROWS=[6,5,4,3,2,1];
+// Поле з презентації. Повтори (10, 15, 5) замінено: Ж4→№3, Е3→№36, В3→Кракен, Д1→Скриня. null = вода.
+const LAYOUT={
+  6:[null,1,29,16,28,19,34],
+  5:[2,null,17,9,27,7,20],
+  4:[15,24,6,null,10,18,3],
+  3:[null,21,'K',12,25,36,8],
+  2:[14,30,26,22,35,4,23],
+  1:[33,5,13,11,'T',31,32]
+};
+const Q={
+ 1:{p:1,q:"Морська вода густіша за річкову. Як змінюється осадка корабля, коли він виходить з річки в море?",a:"Зменшується."},
+ 2:{p:1,q:"Чому кропива навіть при слабенькому дотику легко розрізає клітини тіла людини?",a:"Тонкі краї листочків створюють великий тиск."},
+ 3:{p:2,q:"Чому біля поверхні Землі атмосферний тиск найбільший?",a:"Біля поверхні Землі густина атмосфери більша."},
+ 4:{p:1,q:"Як називається найменша частинка простої речовини?",a:"Атом."},
+ 5:{p:3,q:"Чому огірок завжди на 1–2 °С холодніший від навколишнього середовища?",a:"Його пори наповнені соком і містять менше повітря. Рідина постійно випаровується, і при цьому внутрішня енергія огірка зменшується."},
+ 6:{p:1,q:"Як називається прилад для вимірювання тиску рідини?",a:"Манометр."},
+ 7:{p:3,q:"Чому під час польоту на літаках не рекомендується мати в кишені авторучку з чорнилом?",a:"Чорнило витече, бо атмосферний тиск з висотою зменшується."},
+ 8:{p:3,q:"Давньогрецький учений Арістотель, доводячи невагомість повітря, зважував шкіряний мішок без повітря і той самий мішок з повітрям. Вага в обох випадках була однакова. Чого не врахував Арістотель?",a:"Виштовхувальної сили, яка дорівнює вазі повітря в мішку."},
+ 9:{p:3,q:"Який стародавній учений першим зміг викрити шахрая, провівши слідчий експеримент?",a:"Архімед."},
+ 10:{p:3,q:"Собаки не мають повноцінного колірного зору. Собаки-поводирі не можуть відрізнити червоний сигнал світлофора від зеленого. Як вони орієнтуються на вулиці?",a:"За потоком руху людей і машин."},
+ 11:{p:2,q:"Чому склянка, вимита теплою водою і поставлена догори дном на клейонку, якою накритий стіл, щільно пристає до клейонки?",a:"Повітря в склянці охолоджується, і тиск у ній зменшується."},
+ 12:{p:2,q:"Чому не можна гасити нафту чи гас водою під час їх горіння?",a:"Вони плавають на поверхні води, бо їхня густина менша за густину води."},
+ 13:{p:2,q:"Підводний човен сплив на поверхню в Північному Льодовитому океані й обледенів. Важче чи легше йому тепер буде занурюватися?",a:"Важче. Густина льоду менша за густину води, тому виштовхувальна сила зростає."},
+ 14:{p:2,q:"Під час пострілу в круто зварене яйце в ньому утворюється отвір. Чому ж під час пострілу в сире яйце воно розлітається в усі боки?",a:"Рідина передає тиск у всіх напрямках однаково (закон Паскаля)."},
+ 15:{p:2,q:"Чому мисливські лижі роблять ширшими, ніж спортивні?",a:"Щоб зменшити тиск на сніг."},
+ 16:{p:2,q:"Чому кропива навіть при слабенькому дотику легко розрізає клітини тіла людини?",a:"Тонкі краї листочків, тож тиск дуже високий."},
+ 17:{p:3,q:"Під час Першої світової війни пілот на висоті 2000 м побачив біля обличчя дрібний предмет. Думаючи, що це комаха, він схопив його. Це була… німецька куля. Чи можливо це?",a:"Так. Наприкінці шляху куля рухається повільно, кілька десятків метрів за секунду. Таку швидкість має й літак. Якщо швидкості кулі й літака однакові, відносно пілота куля нерухома."},
+ 18:{p:2,q:"Чи діє закон Архімеда в невагомості? Обґрунтуйте.",a:"Не діє: у невагомості тіла й рідини не мають ваги, тому виштовхувальна сила не виникає."},
+ 19:{p:3,q:"Чому глибоководна риба, коли її піднімають з великої глибини на поверхню, роздувається, а іноді навіть розривається?",a:"Тіло риби пристосоване до великого зовнішнього тиску. Коли її піднімають, тиск усередині риби перевищує тиск зовні, і вона роздувається."},
+ 20:{p:2,q:"Чому в дуже великий мороз полозки саней погано ковзають по снігу?",a:"При невеликому морозі від тертя частина снігу розтає, і вода зменшує тертя. У великий мороз сніг не плавиться."},
+ 21:{p:2,q:"Розгадайте ребус.",a:"Вакуум.",rebus:true},
+ 22:{p:3,q:"Чому греблю будують так, що її профіль розширюється донизу?",a:"Така гребля краще протидіє тиску води, який зростає з глибиною."},
+ 23:{p:3,q:"Чому удар блискавки розщеплює дерево?",a:"Блискавка має дуже високу температуру. Волога в клітинах дерева миттєво закипає, і пара розриває стовбур."},
+ 24:{p:3,q:"Усі знають, що йти легше, ніж бігти. Як це обґрунтувати з точки зору механіки?",a:"Біг складається зі стрибків, під час яких людина піднімає свій центр ваги значно вище, ніж при ходьбі. На це витрачається додаткова енергія."},
+ 25:{p:3,q:"Людина може залишитися під дощем абсолютно сухою, якщо перебуває в пустелі. Чому?",a:"Дощі в пустелі бувають, але краплі не долітають до землі: вони випаровуються в гарячому повітрі."},
+ 26:{p:2,q:"Чи завжди в киплячій воді можна зварити м’ясо?",a:"Не завжди. Температура кипіння залежить від атмосферного тиску: високо в горах вода кипить при нижчій температурі."},
+ 27:{p:2,q:"Чому опік шкіри від киплячої олії сильніший, ніж від киплячої води?",a:"Вода кипить при 100 °С, а температура кипіння олії приблизно втричі вища."},
+ 28:{p:1,q:"Шведський учений, завдяки якому ми всі ходимо «під градусом».",a:"Андерс Цельсій."},
+ 29:{p:1,q:"Куди дівається кінетична енергія тіла при його зупинці?",a:"Переходить у внутрішню енергію."},
+ 30:{p:1,q:"Чому мильна бульбашка має сферичну форму?",a:"Повітря всередині тисне на всі ділянки плівки однаково, тому поверхня рівновіддалена від центру."},
+ 31:{p:1,q:"Назвіть властивість тіл, описану законом Гука.",a:"Пружність."},
+ 32:{p:1,q:"Посудина, яку Архімед використав у «лабораторних» цілях.",a:"Ванна."},
+ 33:{p:1,q:"Чому в холодному приміщенні насамперед мерзнуть ноги?",a:"Холодне повітря важче, тому збирається внизу, біля підлоги."},
+ 34:{p:2,q:"Чому лось може порівняно легко бігати по болотах?",a:"На кожній нозі лося два копита з перетинкою. Під час бігу копита розсуваються, перетинка натягується, вага розподіляється на більшу площу, і тиск зменшується."},
+ 35:{p:1,q:"Чому качки й гуси не бояться морозів?",a:"Пух і пір’я створюють добру теплоізоляцію."},
+ 36:{p:1,q:"Один баварський комерсант поставив біля входу в магазин терези, на яких кожен, хто входив і виходив, мав зважуватися. Для чого?",a:"Щоб ніхто не зміг непомітно винести крадене."}
+};
+const TEAM_COLORS=['var(--t1)','var(--t2)','var(--t3)','var(--t4)','var(--t5)'];
+const OPTS={"1": ["Зменшується", "Збільшується", "Не змінюється"], "2": ["Тонкі краї листка створюють великий тиск", "Листок має дуже велику масу", "Листок притягується до шкіри електрикою"], "3": ["Біля поверхні густина повітря найбільша", "Біля поверхні повітря найтепліше", "Біля поверхні найменше вітру"], "4": ["Атом", "Електрон", "Крапля"], "5": ["Сік випаровується, і огірок втрачає внутрішню енергію", "Огірок поглинає холод із ґрунту", "Шкірка огірка відбиває все світло"], "6": ["Манометр", "Барометр", "Динамометр"], "7": ["З висотою тиск зменшується, і чорнило витече", "На висоті чорнило замерзає", "Чорнило густішає від вібрації літака"], "8": ["Виштовхувальну силу повітря", "Масу шкіряного мішка", "Температуру повітря"], "9": ["Архімед", "Піфагор", "Евклід"], "10": ["За потоком руху людей і машин", "За яскравістю сигналу", "За запахом асфальту"], "11": ["Повітря в склянці охолоджується, і тиск у ній зменшується", "Клейонка липка від води", "Склянка намагнічується"], "12": ["Нафта легша за воду, спливає й далі горить", "Вода містить кисень і посилює горіння", "Вода з нафтою вибухає"], "13": ["Важче: лід збільшує виштовхувальну силу", "Легше: лід додає вагу", "Так само: лід нічого не змінює"], "14": ["Рідина передає тиск у всіх напрямках однаково", "Шкаралупа сирого яйця тонша", "У сирому яйці більше повітря"], "15": ["Щоб зменшити тиск на сніг", "Щоб збільшити швидкість", "Щоб лижі були легшими"], "16": ["Тонкі краї листка створюють великий тиск", "Листок має дуже велику масу", "Листок притягується до шкіри електрикою"], "17": ["Так, якщо швидкості кулі й літака однакові", "Ні, куля завжди швидша за літак", "Так, бо на висоті куля стає невагомою"], "18": ["Не діє: у невагомості тіла не мають ваги", "Діє так само, як на Землі", "Діє вдвічі сильніше"], "19": ["Тиск усередині риби більший за зовнішній", "Риба нагрівається на поверхні", "Риба наковтується повітря"], "20": ["Сніг не тане від тертя, і немає водяної «змазки»", "Полозки стискаються від холоду", "Сніг стає липким від морозу"], "21": ["Вакуум", "Акула", "Вакцина"], "22": ["Тиск води зростає з глибиною", "Щоб гребля виглядала красивіше", "Щоб риба могла пропливати знизу"], "23": ["Волога в дереві закипає, і пара розриває стовбур", "Блискавка ріже, як сокира", "Дерево стає магнітом і тріскається"], "24": ["Під час бігу центр ваги піднімається вище", "Під час бігу менше тертя", "Під час ходьби тіло стає легшим"], "25": ["Краплі випаровуються, не долітаючи до землі", "Пісок відбиває краплі", "Дощ у пустелі завжди теплий"], "26": ["Не завжди: кипіння залежить від тиску", "Завжди: вода кипить при 100 °С", "Ніколи: м’ясо вариться лише в олії"], "27": ["Температура кипіння олії набагато вища", "Олія липкіша за воду", "Олія важча за воду"], "28": ["Цельсій", "Фаренгейт", "Кельвін"], "29": ["Переходить у внутрішню енергію", "Зникає безслідно", "Переходить у масу тіла"], "30": ["Повітря тисне на плівку однаково з усіх боків", "Мило саме має форму кульки", "Бульбашку стискає вітер"], "31": ["Пружність", "Крихкість", "Пластичність"], "32": ["Ванна", "Глечик", "Відро"], "33": ["Холодне повітря опускається донизу", "Підлога притягує тепло з повітря вгору", "Ноги мають більше кісток"], "34": ["Вага розподіляється на більшу площу копит", "Лось дуже легкий", "Болото під лосем замерзає"], "35": ["Пух і пір’я — добра теплоізоляція", "Птахи не відчувають холоду", "Птахи весь час махають крилами"], "36": ["Щоб ніхто не виніс крадене", "Щоб рахувати відвідувачів", "Щоб покупці стежили за вагою"]};
+const BOT_LEVELS=[{n:'Юнга',p:.4},{n:'Боцман',p:.6},{n:'Капітан',p:.8}];
+const DEFAULT_NAMES=['Морські вовки','Буревісники','Акули Півдня','Корсари Півночі'];
+const KEY='pirate-sea-battle-v1';
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function freshState(){return{solo:false,player:'',botLevel:1,loc:0,bgView:null,screen:'setup',n:2,names:DEFAULT_NAMES.slice(),teams:[],turn:0,cells:{},log:[],sound:true,capPts:1}}
+let S=freshState();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.names)return o}}catch(e){}return null}
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function balWord(n){n=Math.abs(n);const m10=n%10,m100=n%100;if(m10===1&&m100!==11)return'бал';if(m10>=2&&m10<=4&&(m100<12||m100>14))return'бали';return'балів'}
+function use(id){return`<svg aria-hidden="true"><use href="#${id}"/></svg>`}
+function stk(n,c){return`<img class="stk${c?' '+c:''}" src="assets/${n}.png" alt="">`}
+function face(c,cls){return`<img class="portrait${cls?' '+cls:''}" src="assets/captain${c===4?5:(c%4)+1}.jpg" alt="">`}
+
+/* ---------------- sound ---------------- */
+let ac=null;
+function AC(){if(!S.sound)return null;try{if(!ac)ac=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();return ac}catch(e){return null}}
+function noiseBuf(c,d){const b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),a=b.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;return b}
+function boom(){const c=AC();if(!c)return;const t=c.currentTime;const n=c.createBufferSource();n.buffer=noiseBuf(c,1.2);const f=c.createBiquadFilter();f.type='lowpass';f.frequency.setValueAtTime(900,t);f.frequency.exponentialRampToValueAtTime(60,t+1);const g=c.createGain();g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.001,t+1.1);n.connect(f).connect(g).connect(c.destination);n.start(t);const o=c.createOscillator();o.frequency.setValueAtTime(90,t);o.frequency.exponentialRampToValueAtTime(30,t+.5);const og=c.createGain();og.gain.setValueAtTime(.8,t);og.gain.exponentialRampToValueAtTime(.001,t+.6);o.connect(og).connect(c.destination);o.start(t);o.stop(t+.6)}
+function splash(){const c=AC();if(!c)return;const t=c.currentTime;const n=c.createBufferSource();n.buffer=noiseBuf(c,.9);const f=c.createBiquadFilter();f.type='bandpass';f.Q.value=.8;f.frequency.setValueAtTime(2500,t);f.frequency.exponentialRampToValueAtTime(400,t+.8);const g=c.createGain();g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.6,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+.85);n.connect(f).connect(g).connect(c.destination);n.start(t)}
+function tone(freq,start,dur,type,vol){const c=AC();if(!c)return;const t=c.currentTime+start;const o=c.createOscillator();o.type=type||'sine';o.frequency.value=freq;const g=c.createGain();g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(vol||.25,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+dur);o.connect(g).connect(c.destination);o.start(t);o.stop(t+dur)}
+function coins(){[1319,1568,1976,2637].forEach((f,i)=>tone(f,i*.07,.35,'triangle',.18))}
+function bell(){tone(660,0,1.4,'sine',.3);tone(990,0,1,'sine',.12);tone(660,.5,1.4,'sine',.22)}
+function growl(){const c=AC();if(!c)return;const t=c.currentTime;const o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(38,t+1.2);const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=380;const g=c.createGain();g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.35,t+.1);g.gain.exponentialRampToValueAtTime(.001,t+1.3);o.connect(f).connect(g).connect(c.destination);o.start(t);o.stop(t+1.3)}
+function fanfare(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.14,.5,'triangle',.22));tone(1047,.6,1.2,'triangle',.2)}
+function tick(){tone(1800,0,.05,'square',.05)}
+
+
+/* ---------------- screens ---------------- */
+const LOCS=[
+ {f:'loc-lagoon',n:'Бірюзова лагуна'},
+ {f:'loc-shipyard',n:'Бухта корабелів'},
+ {f:'loc-sail',n:'Підняти вітрила!'},
+ {f:'loc-parrot',n:'Палуба на заході сонця',pos:'center 30%'},
+ {f:'loc-helm',n:'Капітанка біля штурвала',pos:'center 30%'},
+ {f:'loc-cliffs',n:'Скелястий берег',pos:'center 30%'},
+ {f:'loc-tavern',n:'Портова таверна'},
+ {f:'loc-rain',n:'Злива на горизонті',pos:'center 25%'},
+ {f:'loc-storm',n:'Шторм! Тримай штурвал',pos:'center 35%'},
+ {f:'loc-cave',n:'Печера скарбів'},
+ {f:'loc-chest',n:'Скриня із золотом'}
+];
+const ROUTE_N=10;
+let bgCur=-1,bgFlip=false,slideT=null;
+function setBg(i){
+  if(i===bgCur)return;bgCur=i;const L=LOCS[i];
+  const a=$('#bgA'),b=$('#bgB');const nx=bgFlip?a:b,cu=bgFlip?b:a;bgFlip=!bgFlip;
+  nx.style.backgroundImage=`url(assets/${L.f}.jpg)`;nx.style.backgroundPosition=L.pos||'center';
+  const img=new Image();img.onload=img.onerror=()=>{nx.classList.add('on');cu.classList.remove('on')};img.src=`assets/${L.f}.jpg`;
+}
+function slideshow(on){clearInterval(slideT);slideT=null;if(!on)return;let k=bgCur<0?0:bgCur;setBg(k);slideT=setInterval(()=>{k=(k+1)%LOCS.length;setBg(k)},7000)}
+function locForProgress(){return Math.min(ROUTE_N-1,Math.floor(Object.keys(S.cells).length/42*ROUTE_N))}
+function banner(i){const old=document.querySelector('.banner');if(old)old.remove();const d=document.createElement('div');d.className='banner';d.setAttribute('role','status');d.innerHTML=`<img src="assets/th-${LOCS[i].f}.jpg" alt=""><div><small>Нова земля на горизонті</small><b>${esc(LOCS[i].n)}</b></div>`;document.body.appendChild(d);setTimeout(()=>d.remove(),3700);[784,988,1175].forEach((f,k)=>tone(f,k*.12,.4,'triangle',.16))}
+function renderRoute(){
+  const box=$('#route');if(!box)return;const here=S.loc||0,view=S.bgView??here;box.innerHTML='';
+  for(let i=0;i<ROUTE_N;i++){const b=document.createElement('button');const open=i<=here;b.disabled=!open;b.className=(i===here?'here':'')+(i===view&&view!==here?' view':'');
+    b.setAttribute('aria-label',open?`${i+1}. ${LOCS[i].n}`:`${i+1}. Ще не відкрито`);b.title=open?LOCS[i].n:'Ще попереду';
+    if(open){b.style.backgroundImage=`url(assets/th-${LOCS[i].f}.jpg)`;b.onclick=()=>{S.bgView=i===here?null:i;save();setBg(i);renderRoute()}}
+    box.appendChild(b)}
+  $('#route-name').innerHTML=`Зараз: <span>${esc(LOCS[view].n)}</span> · ${here+1} з ${ROUTE_N}`;
+}
+function sceneBg(scr){slideshow(scr==='setup');if(scr==='board')setBg(S.bgView??(S.loc||0));else if(scr==='captains')setBg(3);else if(scr==='final')setBg(10)}
+function show(scr){S.screen=scr;document.body.dataset.scene=scr;document.body.classList.toggle('solo',!!S.solo);sceneBg(scr);if(scr!=='board'){clearTimeout(botT);document.body.classList.remove('bot-turn')}else setTimeout(maybeBot,600);['setup','captains','board','final'].forEach(s=>{$('#scr-'+s).hidden=s!==scr});save();window.scrollTo(0,0)}
+
+/* ---------------- setup ---------------- */
+function renderTeamInputs(){
+  const box=$('#team-inputs');box.innerHTML='';
+  const solo=S.n===1;$('#btn-start-captains').hidden=solo;$('#btn-start-board').innerHTML=solo?'<svg><use href="#i-cannon"/></svg>Почати бій з комп’ютером':'<svg><use href="#i-cannon"/></svg>Одразу до бою';
+  $('#btn-start-board').className=solo?'btn primary':'btn';
+  if(solo){
+    const d=document.createElement('div');d.className='team-input';d.style.setProperty('--tc',TEAM_COLORS[0]);
+    d.innerHTML=`${face(0)}<label class="sr" for="tn0">Твоє ім’я</label><input id="tn0" maxlength="28" placeholder="Твоє ім’я" value="${esc(S.player||'')}">`;
+    d.querySelector('input').addEventListener('input',e=>{S.player=e.target.value;save()});box.appendChild(d);
+    const v=document.createElement('div');v.className='vs';v.textContent='проти';box.appendChild(v);
+    const bt=document.createElement('div');bt.className='team-input bot-row';bt.style.setProperty('--tc',TEAM_COLORS[4]);
+    bt.innerHTML=`${face(4)}<div class="bot-meta"><b>Комп’ютер</b><div class="seg diff" role="group" aria-label="Рівень комп’ютера">${BOT_LEVELS.map((l,i)=>`<button data-l="${i}" aria-pressed="${i===(S.botLevel??1)}">${l.n}</button>`).join('')}</div></div>`;
+    bt.querySelectorAll('.diff button').forEach(b=>b.onclick=()=>{S.botLevel=+b.dataset.l;save();bt.querySelectorAll('.diff button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
+    box.appendChild(bt);
+    const h=document.createElement('p');h.className='solo-hint';h.textContent='Ви з комп’ютером стріляєте по черзі. На запитання обирай одну з трьох відповідей. Чим вищий рівень, тим частіше комп’ютер влучає.';box.appendChild(h);
+  }
+  for(let i=0;i<(solo?0:S.n);i++){
+    const d=document.createElement('div');d.className='team-input';
+    d.style.setProperty('--tc',TEAM_COLORS[i]);d.innerHTML=`${face(i)}<label class="sr" for="tn${i}">Назва команди ${i+1}</label><input id="tn${i}" maxlength="28" value="${esc(S.names[i]||DEFAULT_NAMES[i])}">`;
+    d.querySelector('input').addEventListener('input',e=>{S.names[i]=e.target.value;save()});
+    box.appendChild(d);
+  }
+  document.querySelectorAll('#mode-seg button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.n===S.n)));
+}
+document.querySelectorAll('#mode-seg button').forEach(b=>b.addEventListener('click',()=>{S.n=+b.dataset.n;renderTeamInputs();save()}));
+function startGame(to){
+  S.teams=[];S.solo=S.n===1;
+  if(S.solo){S.teams=[{name:(S.player||'').trim()||'Юнга',score:0,c:0},{name:'Комп’ютер',score:0,c:4,bot:true}];to='board'}
+  else for(let i=0;i<S.n;i++){S.teams.push({name:(S.names[i]||'').trim()||DEFAULT_NAMES[i],score:0,c:i})}
+  S.turn=0;S.cells={};S.log=[];S.loc=0;S.bgView=null;
+  AC();
+  if(to==='captains'){initCaptains();show('captains')}else{renderBoard();show('board')}
+}
+$('#btn-start-captains').onclick=()=>startGame('captains');
+$('#btn-start-board').onclick=()=>startGame('board');
+$('#btn-resume').onclick=()=>{AC();if(S.screen==='captains'){initCaptains();show('captains')}else if(S.screen==='final'){showFinal()}else{renderBoard();show('board')}};
+
+/* ---------------- captains ---------------- */
+const WORD='ЧАСТОТА',SCRAMBLE='ТАОСЧТА';
+let tiles=[],slots=[];
+function initCaptains(order){
+  const letters=(order||SCRAMBLE).split('');
+  tiles=letters.map((ch,i)=>({ch,id:i,used:false}));slots=[];
+  $('#reveal').hidden=true;$('#slots').classList.remove('win');
+  drawCaptains();renderCapAward();
+}
+function drawCaptains(){
+  const T=$('#tiles');T.innerHTML='';
+  tiles.forEach(t=>{const b=document.createElement('button');b.className='tile'+(t.used?' used':'');b.textContent=t.ch;b.setAttribute('aria-label','Літера '+t.ch);b.onclick=()=>{if(slots.length>=WORD.length)return;t.used=true;slots.push(t);tick();drawCaptains();check()};T.appendChild(b)});
+  const Sl=$('#slots');Sl.innerHTML='';
+  for(let i=0;i<WORD.length;i++){const s=slots[i];const b=document.createElement('button');b.className='slot'+(s?' filled':'');b.textContent=s?s.ch:'';b.setAttribute('aria-label',s?'Повернути літеру '+s.ch:'Порожня клітинка');if(s)b.onclick=()=>{s.used=false;slots.splice(i,1);$('#slots').classList.remove('win');drawCaptains()};Sl.appendChild(b)}
+}
+function check(){if(slots.length===WORD.length){const w=slots.map(s=>s.ch).join('');if(w===WORD){$('#slots').classList.add('win');fanfare();coinRain(26)}else{toast('Не те слово. Спробуйте ще!');tone(220,0,.3,'sawtooth',.12)}}}
+$('#btn-shuffle').onclick=()=>{const a=SCRAMBLE.split('');for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}initCaptains(a.join(''))};
+$('#btn-clear').onclick=()=>{tiles.forEach(t=>t.used=false);slots=[];$('#slots').classList.remove('win');drawCaptains()};
+$('#btn-reveal').onclick=()=>{$('#reveal').hidden=false;fanfare()};
+document.querySelectorAll('#cap-pts button').forEach(b=>b.addEventListener('click',()=>{S.capPts=+b.dataset.p;document.querySelectorAll('#cap-pts button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderCapAward()}));
+function renderCapAward(){
+  document.querySelectorAll('#cap-pts button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.p===S.capPts)));
+  const box=$('#cap-award');box.innerHTML='';
+  S.teams.forEach((t,i)=>{const b=document.createElement('button');b.className='award-dark';b.style.setProperty('--tc',TEAM_COLORS[t.c]);b.innerHTML=`${face(t.c)}<span>${esc(t.name)}</span><b>+${S.capPts}</b>`;b.onclick=()=>{t.score+=S.capPts;addLog('★',`Капітан «${t.name}»: +${S.capPts} ${balWord(S.capPts)}`);coins();save();toast(`«${t.name}» отримує +${S.capPts} ${balWord(S.capPts)}. Разом: ${t.score}`)};box.appendChild(b)});
+}
+$('#btn-to-board').onclick=()=>{renderBoard();show('board')};
+$('#btn-captains').onclick=()=>{initCaptains();show('captains')};
+
+/* ---------------- board ---------------- */
+function cellKey(c,r){return COLS[c]+r}
+function content(c,r){return LAYOUT[r][c]}
+function renderFleet(){
+  const f=$('#fleet');f.style.setProperty('--n',S.teams.length);f.innerHTML='';
+  S.teams.forEach((t,i)=>{const b=document.createElement('button');b.className='ship-card'+(i===S.turn?' active':'');b.style.setProperty('--tc',TEAM_COLORS[t.c]);b.title='Передати хід цій команді';
+    b.innerHTML=`${stk(t.c%2?'ship2':'ship1','ghost-ship')}${face(t.c)}<div class="meta"><div class="name">${esc(t.name)}</div><div class="turn-tag">${i===S.turn?(t.bot?'Цілиться…':'Зараз стріляє'):'Чекає на хід'}</div></div><div class="score" id="sc${i}">${t.score}</div>`;
+    b.onclick=()=>{if(S.solo)return;S.turn=i;save();renderFleet()};f.appendChild(b)});
+}
+function cellInner(st){
+  const k=st.k;
+  if(k==='hit')return`${stk('explosion')}<span class="pts">+${st.pts}</span>`;
+  if(k==='wreck')return stk('burning');
+  if(k==='water')return stk('splash');
+  if(k==='treasure')return stk('chest');
+  if(k==='kraken')return use('i-kraken');
+  return'';
+}
+function renderBoard(){
+  renderFleet();
+  const B=$('#board');B.innerHTML='';
+  ROWS.forEach(r=>{
+    const l=document.createElement('div');l.className='lbl';l.textContent=r;B.appendChild(l);
+    COLS.forEach((col,c)=>{
+      const key=cellKey(c,r),st=S.cells[key];const b=document.createElement('button');b.className='cell';b.dataset.key=key;
+      if(st){b.dataset.state=st.k;b.innerHTML=cellInner(st)+`<span class="ocoord">${key}</span>`;if(st.k==='hit')b.style.setProperty('--tc',TEAM_COLORS[S.teams[st.by]?.c??0]);b.setAttribute('aria-label',key+': відкрито');b.tabIndex=-1}
+      else{b.innerHTML=`<span class="coord">${key}</span>`;b.setAttribute('aria-label','Клітинка '+key);b.onclick=()=>shoot(key)}
+      B.appendChild(b);
+    });
+  });
+  const e=document.createElement('div');B.appendChild(e);
+  COLS.forEach(c=>{const l=document.createElement('div');l.className='lbl';l.textContent=c;B.appendChild(l)});
+  const L=locForProgress();if(S.loc==null)S.loc=L;if(L!==S.loc){const up=L>S.loc;S.loc=L;S.bgView=null;save();if(up&&!$('#scr-board').hidden)banner(L)}
+  if(!$('#scr-board').hidden)setBg(S.bgView??S.loc);renderRoute();
+  const opened=Object.keys(S.cells).length;$('#prog-txt').textContent=`${opened} / 42`;$('#prog').style.width=(opened/42*100)+'%';
+  renderLog();updateSoundBtn();
+}
+function renderLog(){
+  const L=$('#log');if(!S.log.length){L.innerHTML='<li class="empty">Перший постріл ще попереду.</li>';return}
+  L.innerHTML=S.log.slice().reverse().map(x=>`<li><span class="c">${esc(x.c)}</span><span>${esc(x.t)}</span></li>`).join('');
+}
+function addLog(c,t){S.log.push({c,t});if(S.log.length>60)S.log.shift();save();if(!$('#scr-board').hidden)renderLog()}
+function nextTurn(){S.turn=(S.turn+1)%S.teams.length;save()}
+function isBotTurn(){return !!(S.solo&&S.teams[S.turn]&&S.teams[S.turn].bot)}
+let botT=null;
+function maybeBot(){clearTimeout(botT);if(!isBotTurn()||$('#scr-board').hidden||Object.keys(S.cells).length>=42||$('#modal-root').innerHTML)return;
+  document.body.classList.add('bot-turn');toast('Комп’ютер наводить гармату…');
+  botT=setTimeout(()=>{if(!isBotTurn()||$('#scr-board').hidden)return;const free=[];ROWS.forEach(r=>COLS.forEach(c=>{if(!S.cells[c+r])free.push(c+r)}));if(!free.length)return;shoot(free[Math.floor(Math.random()*free.length)],true)},1500)}
+function bumpScore(i){renderFleet();const el=$('#sc'+i);if(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump')}}
+
+function parseCoord(v){
+  v=(v||'').toUpperCase().replace(/\s+/g,'');
+  const lat={A:'А',B:'Б',V:'В',G:'Г',D:'Д',E:'Е',Z:'Ж',Є:'Е',Ё:'Е'};
+  let m=v.match(/^([А-ЯЇІЄҐA-Z])(\d)$/)||v.match(/^(\d)([А-ЯЇІЄҐA-Z])$/);if(!m)return null;
+  let L=isNaN(m[1])?m[1]:m[2],N=isNaN(m[1])?m[2]:m[1];L=lat[L]||L;
+  if(!COLS.includes(L)||!ROWS.includes(+N))return null;return L+N;
+}
+$('#fire-form')&&$('#fire-form').addEventListener('submit',e=>{e.preventDefault();const inp=$('#coord-in');const k=parseCoord(inp.value);const err=$('#coord-err');
+  if(!k){err.textContent='Назвіть клітинку так: літера А–Ж і цифра 1–6, наприклад Д4.';return}
+  if(S.cells[k]){err.textContent=`Клітинку ${k} вже відкрито. Оберіть іншу.`;return}
+  err.textContent='';inp.value='';shoot(k)});
+
+let busy=false;
+function shoot(key,byBot){
+  if(busy||S.cells[key])return;
+  if(isBotTurn()&&!byBot){toast('Зачекай: зараз стріляє комп’ютер');return}
+  busy=true;
+  const cellEl=document.querySelector(`.cell[data-key="${key}"]`);
+  const c=COLS.indexOf(key[0]),r=+key.slice(1);const what=content(c,r);
+  boom();
+  fireAnim(cellEl,what===null).then(()=>{
+    busy=false;
+    if(what===null){splash();mark(key,{k:'water'});addLog(key,`«${S.teams[S.turn].name}»: вода, промах`);special('water',key);}
+    else if(what==='T'){coins();const t=S.teams[S.turn];t.score+=2;mark(key,{k:'treasure'});addLog(key,`«${t.name}» знаходить скриню: +2 бали`);bumpScore(S.turn);special('treasure',key);coinRain(30)}
+    else if(what==='K'){growl();const t=S.teams[S.turn];const lost=t.score>0?1:0;t.score-=lost;mark(key,{k:'kraken'});addLog(key,`Кракен атакує «${t.name}»: −${lost} ${balWord(lost)}`);bumpScore(S.turn);special('kraken',key,lost)}
+    else (S.solo?soloQuestion:question)(key,what);
+  });
+}
+function mark(key,st){S.cells[key]=st;save();renderBoard();const el=document.querySelector(`.cell[data-key="${key}"]`);if(el)el.classList.add('pop')}
+function fireAnim(cell,water){
+  return new Promise(res=>{
+    if(reduce||!cell||!cell.animate){res();return}
+    const r=cell.getBoundingClientRect();const sx=window.innerWidth/2,sy=window.innerHeight+30,ex=r.left+r.width/2,ey=r.top+r.height/2;
+    const mx=(sx+ex)/2,my=Math.max(20,Math.min(sy,ey)-200);
+    const b=document.createElement('div');b.className='ball';document.body.appendChild(b);
+    const kf=[];for(let i=0;i<=24;i++){const t=i/24;const x=(1-t)*(1-t)*sx+2*(1-t)*t*mx+t*t*ex,y=(1-t)*(1-t)*sy+2*(1-t)*t*my+t*t*ey;kf.push({transform:`translate(${x-8}px,${y-8}px) scale(${1.6-.8*t})`})}
+    const an=b.animate(kf,{duration:620,easing:'linear'});
+    an.onfinish=()=>{b.remove();const bu=document.createElement('div');bu.className='burst'+(water?' water':'');bu.style.left=ex+'px';bu.style.top=ey+'px';document.body.appendChild(bu);setTimeout(()=>bu.remove(),650);
+      const bd=$('#board');bd.classList.remove('shake');void bd.offsetWidth;bd.classList.add('shake');setTimeout(res,280)};
+  });
+}
+
+/* ---------------- modals ---------------- */
+let timerId=null,tLeft=60,tRun=false;const T_TOTAL=60;
+function closeModal(){clearInterval(timerId);timerId=null;$('#modal-root').innerHTML='';document.removeEventListener('keydown',escKey)}
+function escKey(e){if(e.key==='Escape'){const x=document.querySelector('.close-x');if(x)x.click()}}
+function openModal(html){
+  const root=$('#modal-root');root.innerHTML=`<div class="overlay" role="dialog" aria-modal="true"><div class="scroll">${html}</div></div>`;
+  document.addEventListener('keydown',escKey);
+  const f=root.querySelector('[data-focus]')||root.querySelector('button');if(f)f.focus();
+  return root;
+}
+function soloQuestion(key,num){
+  const q=Q[num];const cur=S.turn;const bot=!!S.teams[cur].bot;
+  const order=[0,1,2].sort(()=>Math.random()-.5);
+  const opts=order.map(i=>`<button class="opt" data-i="${i}" ${bot?'disabled':''}><span class="ltr"></span>${esc(OPTS[num][i])}</button>`).join('');
+  const root=openModal(`
+    ${stk('skull','scroll-deco')}
+    <div class="q-head">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="q-coord">${key}</span>
+        <span class="q-num">Запитання № ${num}<br><span class="q-who">${bot?'Відповідає комп’ютер':'Твоя черга відповідати'}</span></span>
+      </div>
+      <span class="seal">${q.p}<small>${balWord(q.p)}</small></span>
+    </div>
+    <div class="q-body${bot?' no-timer':''}">
+      <div style="min-width:0">
+        <p class="q-text">${esc(q.q)}</p>
+        ${q.rebus?rebusSVG():''}
+      </div>
+      ${bot?'':`<div class="timer-wrap"><div class="timer" id="timer"><svg viewBox="0 0 120 120"><circle class="t-bg" cx="60" cy="60" r="52"/><circle class="t-fg" id="t-fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="t-num" id="t-num">60</div></div></div>`}
+    </div>
+    <div class="opts" id="opts">${opts}</div>
+    ${bot?'<p class="bot-think" id="bot-think"><span></span><span></span><span></span> Комп’ютер думає</p>':''}
+    <div id="ans-box"></div>
+    <div class="q-actions" id="q-actions" hidden><button class="ink-btn" id="q-next" data-focus>Далі</button></div>`);
+  let done=false;
+  function finish(i,timeout){
+    if(done)return;done=true;clearInterval(timerId);tRun=false;
+    const ok=i===0;const bt=$('#bot-think');if(bt)bt.remove();
+    root.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const k=+b.dataset.i;if(k===0)b.classList.add('right');else if(k===i)b.classList.add('wrong')});
+    const who=S.teams[cur];
+    const head=timeout?'Час вийшов!':ok?(bot?'Комп’ютер влучив!':'Влучно!'):(bot?'Комп’ютер схибив!':'Мимо!');
+    $('#ans-box').innerHTML=`<div class="answer ${ok?'':'miss'}"><b>${head}</b> ${ok?`+${q.p} ${balWord(q.p)} для «${esc(who.name)}».`:''} ${esc(q.a)}</div>`;
+    if(ok){coins();who.score+=q.p;bumpScore(cur)}else splash();
+    const qa=$('#q-actions');qa.hidden=false;$('#q-next').focus();
+    $('#q-next').onclick=()=>{closeModal();mark(key,ok?{k:'hit',by:cur,pts:q.p}:{k:'wreck'});addLog(key,`№${num}: «${who.name}» ${ok?'+'+q.p+' '+balWord(q.p):'мимо'}`);nextTurn();afterMove()};
+  }
+  if(bot){
+    const lvl=BOT_LEVELS[S.botLevel??1].p;const pr=Math.min(.95,Math.max(.1,lvl+(q.p===1?.1:q.p===3?-.1:0)));
+    const pick=Math.random()<pr?0:(Math.random()<.5?1:2);
+    setTimeout(()=>{const b=root.querySelector(`.opt[data-i="${pick}"]`);if(b)b.classList.add('chosen');setTimeout(()=>finish(pick),700)},1900);
+  }else{
+    root.querySelectorAll('.opt').forEach(b=>b.onclick=()=>finish(+b.dataset.i));
+    tLeft=T_TOTAL;tRun=true;drawTimer();clearInterval(timerId);timerId=setInterval(()=>{if(!tRun)return;tLeft--;drawTimer();if(tLeft<=5&&tLeft>0)tick();if(tLeft<=0){bell();finish(-1,true)}},1000);
+  }
+}
+function question(key,num){
+  const q=Q[num];const cur=S.turn;
+  const awardBtns=S.teams.map((t,i)=>`<button class="award${i===cur?' cur':''}" data-i="${i}" style="--tc:${TEAM_COLORS[t.c]}">${face(t.c)}<span class="nm">${esc(t.name)}</span><b>+${q.p}</b></button>`).join('');
+  const root=openModal(`
+    ${stk('skull','scroll-deco')}
+    <button class="close-x" aria-label="Закрити, клітинка залишиться закритою" title="Закрити (клітинка залишиться закритою)">${use('i-x')}</button>
+    <div class="q-head">
+      <div style="display:flex;align-items:center;gap:16px">
+        <span class="q-coord">${key}</span>
+        <span class="q-num">Запитання № ${num}<br><span style="font-family:var(--f-body);font-weight:400;font-size:.75em;opacity:.75">Стріляє «${esc(S.teams[cur].name)}»</span></span>
+      </div>
+      <span class="seal">${q.p}<small>${balWord(q.p)}</small></span>
+    </div>
+    <div class="q-body">
+      <div style="min-width:0">
+        <p class="q-text">${esc(q.q)}</p>
+        ${q.rebus?rebusSVG():''}
+        <div id="ans-box"></div>
+      </div>
+      <div>
+        <div class="timer" id="timer"><svg viewBox="0 0 120 120"><circle class="t-bg" cx="60" cy="60" r="52"/><circle class="t-fg" id="t-fg" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="0"/></svg><div class="t-num" id="t-num">60</div></div>
+        <div class="timer-ctl"><button id="t-toggle" aria-label="Пауза">${use('i-pause')}</button><button id="t-reset" aria-label="Скинути таймер">${use('i-reset')}</button></div>
+      </div>
+    </div>
+    <div class="q-actions" id="q-actions">
+      <button class="ink-btn" id="show-ans" data-focus>${use('i-eye')}Показати відповідь</button>
+    </div>`);
+  startTimer();
+  root.querySelector('.close-x').onclick=closeModal;
+  root.querySelector('#show-ans').onclick=()=>{
+    $('#ans-box').innerHTML=`<div class="answer"><b>Відповідь.</b> ${esc(q.a)}</div>`;
+    pauseTimer();
+    $('#q-actions').innerHTML=`<span class="who">Хто влучив?</span>${awardBtns}<button class="nobody" id="nobody">Ніхто, мимо</button>`;
+    $('#q-actions').querySelectorAll('.award').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;const t=S.teams[i];t.score+=q.p;coins();closeModal();mark(key,{k:'hit',by:i,pts:q.p});addLog(key,`№${num}: «${t.name}» +${q.p} ${balWord(q.p)}`);nextTurn();bumpScore(i);afterMove()});
+    $('#nobody').onclick=()=>{splash();closeModal();mark(key,{k:'wreck'});addLog(key,`№${num}: ніхто не відповів`);nextTurn();renderFleet();afterMove()};
+  };
+}
+function special(kind,key,lost){
+  const t=S.teams[S.turn];
+  const map={
+    water:{icon:'i-water',col:'#2f7f93',title:'Вода!',text:`У клітинці ${key} тільки хвилі. Хід переходить до наступного флоту.`},
+    treasure:{icon:'i-chest',col:'#b9862c',title:'Скриня з золотом!',text:`Флот «${t.name}» отримує +2 бали.`},
+    kraken:{icon:'i-kraken',col:'#7a49a8',title:'Кракен!',text:lost?`Чудовисько з глибин забирає в «${t.name}» 1 бал.`:`Кракен напав на «${t.name}», але красти ще нічого.`}
+  }[kind];
+  const art=kind==='kraken'?`<svg class="art" style="color:${map.col}" viewBox="0 0 64 64"><use href="#${map.icon}"/></svg>`:stk(kind==='water'?'splash':'chest','art');
+  const root=openModal(`<div class="special">${art}<div><div class="q-coord" style="font-size:1.6rem;margin-bottom:6px">${key}</div><h3>${map.title}</h3><p>${esc(map.text)}</p></div></div>
+    <div class="q-actions"><button class="ink-btn" id="sp-next" data-focus>Далі</button></div>`);
+  root.querySelector('#sp-next').onclick=()=>{closeModal();nextTurn();renderFleet();afterMove()};
+}
+function afterMove(){document.body.classList.remove('bot-turn');if(Object.keys(S.cells).length>=42){setTimeout(showFinal,700);return}renderFleet();maybeBot()}
+function startTimer(){tLeft=T_TOTAL;tRun=true;drawTimer();clearInterval(timerId);timerId=setInterval(()=>{if(!tRun)return;tLeft--;drawTimer();if(tLeft<=5&&tLeft>0)tick();if(tLeft<=0){tRun=false;bell();drawTimer()}},1000)}
+function pauseTimer(){tRun=false;drawTimer()}
+function drawTimer(){const n=$('#t-num');if(!n)return;n.textContent=Math.max(0,tLeft);$('#t-fg').style.strokeDashoffset=326.7*(1-Math.max(0,tLeft)/T_TOTAL);$('#timer').classList.toggle('low',tLeft<=10);
+  const tg=$('#t-toggle');if(tg){tg.innerHTML=use(tRun?'i-pause':'i-play');tg.setAttribute('aria-label',tRun?'Пауза':'Продовжити');tg.onclick=()=>{if(tLeft<=0)return;tRun=!tRun;drawTimer()}}
+  const rs=$('#t-reset');if(rs)rs.onclick=()=>{tLeft=T_TOTAL;tRun=true;drawTimer()}}
+
+function rebusSVG(){
+  return `<div class="rebus" aria-label="Ребус: літера В, акула з позначкою 4 дорівнює У, кома, літера М"><svg viewBox="0 0 520 180">
+    <rect width="520" height="180" fill="#fffdf6"/>
+    <text x="40" y="128" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="104" fill="#111">В</text>
+    <text x="205" y="44" font-family="Arial,sans-serif" font-weight="700" font-size="34" fill="#2b6fa3">4=У</text>
+    <g transform="translate(150 60)">
+      <path d="M8 62 C40 30 120 22 176 52 C188 58 196 62 200 66 C192 72 180 76 168 78 C120 92 52 90 8 62Z" fill="#5f8fa8" stroke="#24485c" stroke-width="3"/>
+      <path d="M96 30 L116 0 L128 34Z" fill="#5f8fa8" stroke="#24485c" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M12 62 L-14 34 L-6 64 L-16 92 Z" fill="#5f8fa8" stroke="#24485c" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M40 72 C90 86 140 86 176 76 C150 92 90 94 40 72Z" fill="#e9f1f4"/>
+      <path d="M168 70 l-6 6 -5 -6 -5 6 -5 -6 -5 6 -5 -6" fill="none" stroke="#fff" stroke-width="2.5"/>
+      <path d="M160 68 Q176 72 194 66" fill="none" stroke="#24485c" stroke-width="3"/>
+      <circle cx="170" cy="52" r="5" fill="#c62828"/><circle cx="171" cy="51" r="2" fill="#111"/>
+      <path d="M140 52 v14 M132 54 v12 M124 55 v11" stroke="#24485c" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <text x="368" y="138" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="90" fill="#111">,</text>
+    <text x="400" y="128" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="104" fill="#111">М</text>
+  </svg></div>`;
+}
+
+/* ---------------- final ---------------- */
+function showFinal(){
+  closeModal();
+  const ranked=S.teams.map((t,i)=>({...t,i})).sort((a,b)=>b.score-a.score);
+  const top=ranked[0].score;const winners=ranked.filter(x=>x.score===top);
+  const W=$('#winner');W.style.setProperty('--tc',TEAM_COLORS[winners[0].c]);
+  const wc=$('#win-card');wc.style.setProperty('--tc',TEAM_COLORS[winners[0].c]);wc.innerHTML=stk('flagchest')+winners.map(w=>face(w.c)).join('')+stk('chest');
+  $('#scr-final h1').textContent=S.solo?(winners.length>1?'Нічия!':winners[0].bot?'Цього разу виграв комп’ютер':'Перемога!'):'Перемога!';
+  $('#btn-new2').textContent=S.solo&&winners[0].bot?'Реванш!':'Нова гра';
+  W.textContent=S.solo&&winners.length===1?(winners[0].bot?'Спробуй ще раз, у тебе вийде!':`Молодець, «${winners[0].name}»!`):winners.length>1?`Нічия: ${winners.map(w=>'«'+w.name+'»').join(' і ')}`:`Флот «${winners[0].name}»`;
+  let place=0,prev=null;
+  $('#rank').innerHTML=ranked.map((t,k)=>{if(t.score!==prev){place=k+1;prev=t.score}return`<li style="--tc:${TEAM_COLORS[t.c]}"><span class="place">${place}</span>${face(t.c)}<span class="nm">${esc(t.name)}</span><span class="sc">${t.score}</span></li>`}).join('');
+  show('final');fanfare();coinRain(60);
+}
+$('#btn-back-board').onclick=()=>{renderBoard();show('board')};
+function coinRain(n){if(reduce)return;for(let i=0;i<n;i++){const c=document.createElement('div');c.className='coin';c.style.left=Math.random()*100+'vw';c.style.animationDuration=(1.6+Math.random()*1.8)+'s';c.style.animationDelay=(Math.random()*.9)+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),4000)}}
+
+/* ---------------- tools ---------------- */
+function updateSoundBtn(){const b=$('#btn-sound');b.innerHTML=use(S.sound?'i-sound':'i-mute');b.setAttribute('aria-label',S.sound?'Вимкнути звук':'Увімкнути звук');b.title=b.getAttribute('aria-label')}
+$('#btn-sound').onclick=()=>{S.sound=!S.sound;save();updateSoundBtn();if(S.sound)coins()};
+$('#btn-full').onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>toast('Повноекранний режим тут недоступний'))}catch(e){toast('Повноекранний режим тут недоступний')}};
+function twoStep(wrapSel,btnSel,label,onYes){
+  $(btnSel).onclick=()=>{const w=$(wrapSel);const orig=w.innerHTML;w.innerHTML=`<span style="font-size:.9rem">${label}</span><button class="btn primary small" data-y>Так</button><button class="btn ghost small" data-n>Ні</button>`;
+    w.querySelector('[data-y]').onclick=()=>{w.innerHTML=orig;twoStep(wrapSel,btnSel,label,onYes);onYes()};
+    w.querySelector('[data-n]').onclick=()=>{w.innerHTML=orig;twoStep(wrapSel,btnSel,label,onYes)};};
+}
+twoStep('#end-wrap','#btn-end','Завершити бій?',showFinal);
+twoStep('#new-wrap','#btn-new','Почати нову гру?',newGame);
+$('#btn-new2').onclick=newGame;
+function newGame(){const keep={names:S.names,n:S.n,sound:S.sound,player:S.player,botLevel:S.botLevel};S=freshState();Object.assign(S,keep);save();renderTeamInputs();$('#resume').hidden=true;show('setup')}
+let toastT;function toast(m){const old=document.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast';d.setAttribute('role','status');d.textContent=m;document.body.appendChild(d);clearTimeout(toastT);toastT=setTimeout(()=>d.remove(),2600)}
+
+/* ---------------- boot ---------------- */
+const saved=load();
+if(saved){S=Object.assign(freshState(),saved)}
+renderTeamInputs();updateSoundBtn();
+if(saved&&saved.teams&&saved.teams.length&&saved.screen!=='setup'){$('#resume').hidden=false}
+document.body.dataset.scene='setup';slideshow(true);['captains','board','final'].forEach(s=>{$('#scr-'+s).hidden=true});$('#scr-setup').hidden=false;
+})();
+</script>
+
+</body>
+</html>
