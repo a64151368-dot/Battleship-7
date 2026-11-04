@@ -489,13 +489,13 @@ body.bot-turn .board{filter:saturate(.85)}
       </div>
       <div class="panel">
         <h2>Закони моря</h2>
-        <div class="bosun"><img class="portrait" src="assets/captain5.jpg" alt=""><span>Боцман пояснює правила перед відплиттям.</span></div>
+        <div class="bosun"><img class="portrait" src="captain5.jpg" alt=""><span>Боцман пояснює правила перед відплиттям.</span></div>
         <ol class="rules">
           <li>Команди по черзі називають клітинку поля, наприклад <b>Д4</b>.</li>
           <li>За клітинкою ховається запитання вартістю <b>1, 2 або 3 бали</b>. Правильна відповідь приносить бали.</li>
           <li>Якщо команда помилилась, учитель може віддати бали суперникам.</li>
-          <li><span class="legend-inline"><img class="stk" src="assets/splash.png" alt=""><b>Вода</b></span> означає промах, хід переходить далі.</li>
-          <li><span class="legend-inline"><img class="stk" src="assets/chest.png" alt=""><b>Скриня</b></span> дає +2 бали, <span class="legend-inline"><svg style="color:#b27be0"><use href="#i-kraken"/></svg><b>Кракен</b></span> забирає 1 бал.</li>
+          <li><span class="legend-inline"><img class="stk" src="splash.png" alt=""><b>Вода</b></span> означає промах, хід переходить далі.</li>
+          <li><span class="legend-inline"><img class="stk" src="chest.png" alt=""><b>Скриня</b></span> дає +2 бали, <span class="legend-inline"><svg style="color:#b27be0"><use href="#i-kraken"/></svg><b>Кракен</b></span> забирає 1 бал.</li>
           <li>Перемагає флот, що набрав найбільше балів.</li>
         </ol>
       </div>
@@ -534,7 +534,7 @@ body.bot-turn .board{filter:saturate(.85)}
   <!-- ============ BOARD ============ -->
   <section id="scr-board" hidden>
     <div class="topbar">
-      <div class="brand"><img class="stk fl" src="assets/flag.png" alt=""><img class="stk" src="assets/ship1.png" alt=""><span class="gold-text">Морський бій</span></div>
+      <div class="brand"><img class="stk fl" src="flag.png" alt=""><img class="stk" src="ship1.png" alt=""><span class="gold-text">Морський бій</span></div>
       <div class="tools">
         <button class="btn ghost small" id="btn-captains"><svg><use href="#i-crown"/></svg>Капітани</button>
         <button class="btn ghost icon-btn" id="btn-sound" aria-label="Звук"><svg><use href="#i-sound"/></svg></button>
@@ -545,32 +545,32 @@ body.bot-turn .board{filter:saturate(.85)}
     </div>
     <div class="fleet" id="fleet"></div>
     <div class="battle">
-      <div class="board-frame"><div class="board" id="board" role="grid" aria-label="Поле бою"></div><img class="stk corner tl" src="assets/compass.png" alt=""><img class="stk corner tr" src="assets/spyglass.png" alt=""><img class="stk corner bl" src="assets/anchor.png" alt=""><img class="stk corner br" src="assets/skull.png" alt=""><img class="stk flank l" src="assets/cannon.png" alt=""><img class="stk flank r" src="assets/cannon.png" alt=""></div>
+      <div class="board-frame"><div class="board" id="board" role="grid" aria-label="Поле бою"></div><img class="stk corner tl" src="compass.png" alt=""><img class="stk corner tr" src="spyglass.png" alt=""><img class="stk corner bl" src="anchor.png" alt=""><img class="stk corner br" src="skull.png" alt=""><img class="stk flank l" src="cannon.png" alt=""><img class="stk flank r" src="cannon.png" alt=""></div>
       <aside class="side">
         <div class="panel">
-          <h2 class="ph" style="font-size:1.3rem;margin-bottom:8px"><img class="stk" src="assets/cannonfire.png" alt="">Хід бою</h2>
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:8px"><img class="stk" src="cannonfire.png" alt="">Хід бою</h2>
           <p class="hint" style="margin:0">Натисніть клітинку, яку назвала команда.</p>
           <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:.92rem"><span>Відкрито клітинок</span><b id="prog-txt" style="font-variant-numeric:tabular-nums">0 / 42</b></div>
           <div class="progress"><i id="prog" style="width:0%"></i></div>
         </div>
         <div class="panel">
-          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/flag.png" alt="">Маршрут подорожі</h2>
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="flag.png" alt="">Маршрут подорожі</h2>
           <div class="route" id="route"></div>
           <p class="route-name" id="route-name"></p>
           <p class="route-hint">Відкривайте клітинки, щоб пливти далі. Натисніть відкрите місце, щоб подивитися на нього знову.</p>
         </div>
         <div class="panel">
-          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/compass.png" alt="">Позначки на мапі</h2>
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="compass.png" alt="">Позначки на мапі</h2>
           <ul class="legend">
-            <li><span class="sw" style="border-color:var(--gold)"><img class="stk" src="assets/explosion.png" alt=""></span>Влучання команди</li>
-            <li><span class="sw"><img class="stk" src="assets/burning.png" alt=""></span>Ніхто не відповів</li>
-            <li><span class="sw"><img class="stk" src="assets/splash.png" alt=""></span>Вода, промах</li>
-            <li><span class="sw"><img class="stk" src="assets/chest.png" alt=""></span>Скриня, +2 бали</li>
+            <li><span class="sw" style="border-color:var(--gold)"><img class="stk" src="explosion.png" alt=""></span>Влучання команди</li>
+            <li><span class="sw"><img class="stk" src="burning.png" alt=""></span>Ніхто не відповів</li>
+            <li><span class="sw"><img class="stk" src="splash.png" alt=""></span>Вода, промах</li>
+            <li><span class="sw"><img class="stk" src="chest.png" alt=""></span>Скриня, +2 бали</li>
             <li><span class="sw"><svg style="color:#b27be0"><use href="#i-kraken"/></svg></span>Кракен, −1 бал</li>
           </ul>
         </div>
         <div class="panel">
-          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="assets/spyglass.png" alt="">Судновий журнал</h2>
+          <h2 class="ph" style="font-size:1.3rem;margin-bottom:10px"><img class="stk" src="spyglass.png" alt="">Судновий журнал</h2>
           <ul class="log" id="log"></ul>
         </div>
       </aside>
@@ -661,8 +661,8 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function balWord(n){n=Math.abs(n);const m10=n%10,m100=n%100;if(m10===1&&m100!==11)return'бал';if(m10>=2&&m10<=4&&(m100<12||m100>14))return'бали';return'балів'}
 function use(id){return`<svg aria-hidden="true"><use href="#${id}"/></svg>`}
-function stk(n,c){return`<img class="stk${c?' '+c:''}" src="assets/${n}.png" alt="">`}
-function face(c,cls){return`<img class="portrait${cls?' '+cls:''}" src="assets/captain${c===4?5:(c%4)+1}.jpg" alt="">`}
+function stk(n,c){return`<img class="stk${c?' '+c:''}" src="${n}.png" alt="">`}
+function face(c,cls){return`<img class="portrait${cls?' '+cls:''}" src="captain${c===4?5:(c%4)+1}.jpg" alt="">`}
 
 /* ---------------- sound ---------------- */
 let ac=null;
@@ -697,17 +697,17 @@ let bgCur=-1,bgFlip=false,slideT=null;
 function setBg(i){
   if(i===bgCur)return;bgCur=i;const L=LOCS[i];
   const a=$('#bgA'),b=$('#bgB');const nx=bgFlip?a:b,cu=bgFlip?b:a;bgFlip=!bgFlip;
-  nx.style.backgroundImage=`url(assets/${L.f}.jpg)`;nx.style.backgroundPosition=L.pos||'center';
-  const img=new Image();img.onload=img.onerror=()=>{nx.classList.add('on');cu.classList.remove('on')};img.src=`assets/${L.f}.jpg`;
+  nx.style.backgroundImage=`url(${L.f}.jpg)`;nx.style.backgroundPosition=L.pos||'center';
+  const img=new Image();img.onload=img.onerror=()=>{nx.classList.add('on');cu.classList.remove('on')};img.src=`${L.f}.jpg`;
 }
 function slideshow(on){clearInterval(slideT);slideT=null;if(!on)return;let k=bgCur<0?0:bgCur;setBg(k);slideT=setInterval(()=>{k=(k+1)%LOCS.length;setBg(k)},7000)}
 function locForProgress(){return Math.min(ROUTE_N-1,Math.floor(Object.keys(S.cells).length/42*ROUTE_N))}
-function banner(i){const old=document.querySelector('.banner');if(old)old.remove();const d=document.createElement('div');d.className='banner';d.setAttribute('role','status');d.innerHTML=`<img src="assets/th-${LOCS[i].f}.jpg" alt=""><div><small>Нова земля на горизонті</small><b>${esc(LOCS[i].n)}</b></div>`;document.body.appendChild(d);setTimeout(()=>d.remove(),3700);[784,988,1175].forEach((f,k)=>tone(f,k*.12,.4,'triangle',.16))}
+function banner(i){const old=document.querySelector('.banner');if(old)old.remove();const d=document.createElement('div');d.className='banner';d.setAttribute('role','status');d.innerHTML=`<img src="th-${LOCS[i].f}.jpg" alt=""><div><small>Нова земля на горизонті</small><b>${esc(LOCS[i].n)}</b></div>`;document.body.appendChild(d);setTimeout(()=>d.remove(),3700);[784,988,1175].forEach((f,k)=>tone(f,k*.12,.4,'triangle',.16))}
 function renderRoute(){
   const box=$('#route');if(!box)return;const here=S.loc||0,view=S.bgView??here;box.innerHTML='';
   for(let i=0;i<ROUTE_N;i++){const b=document.createElement('button');const open=i<=here;b.disabled=!open;b.className=(i===here?'here':'')+(i===view&&view!==here?' view':'');
     b.setAttribute('aria-label',open?`${i+1}. ${LOCS[i].n}`:`${i+1}. Ще не відкрито`);b.title=open?LOCS[i].n:'Ще попереду';
-    if(open){b.style.backgroundImage=`url(assets/th-${LOCS[i].f}.jpg)`;b.onclick=()=>{S.bgView=i===here?null:i;save();setBg(i);renderRoute()}}
+    if(open){b.style.backgroundImage=`url(th-${LOCS[i].f}.jpg)`;b.onclick=()=>{S.bgView=i===here?null:i;save();setBg(i);renderRoute()}}
     box.appendChild(b)}
   $('#route-name').innerHTML=`Зараз: <span>${esc(LOCS[view].n)}</span> · ${here+1} з ${ROUTE_N}`;
 }
